@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Holerite - Demonstrativo de Pagamento</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f2f2f2;
+      color: #111;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10px;
+    }
+
+    .page {
+      width: 960px;
+      max-width: calc(100vw - 24px);
+      padding: 12px;
+      background: #fff;
+    }
+
+    .holerite {
+      width: 100%;
+      border: 3px solid #111;
+      background: #fff;
+    }
+
+    .header {
+      min-height: 108px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 8px;
+      border-bottom: 2px solid #111;
+      text-align: center;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .company {
+      font-size: 13px;
+      letter-spacing: 0.2px;
+      text-transform: uppercase;
+    }
+
+    .cnpj {
+      margin-top: 4px;
+      font-size: 13px;
+    }
+
+    .statement-title {
+      margin-top: auto;
+      margin-bottom: 2px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 58% 19% 23%;
+      border-bottom: 2px solid #111;
+    }
+
+    .info-row {
+      display: contents;
+    }
+
+    .cell {
+      min-height: 24px;
+      padding: 3px 6px;
+      border-right: 1px solid #111;
+      border-bottom: 1px solid #111;
+      font-weight: 700;
+    }
+
+    .cell:nth-child(3n) {
+      border-right: 0;
+    }
+
+    .info-grid .info-row:last-child .cell {
+      border-bottom: 0;
+    }
+
+    .line {
+      display: inline-block;
+      min-width: 58%;
+      height: 10px;
+      vertical-align: bottom;
+    }
+
+    .payment-table {
+      display: grid;
+      grid-template-columns: 43% 11% 22.5% 23.5%;
+      min-height: 250px;
+      border-bottom: 2px solid #111;
+    }
+
+    .table-head {
+      min-height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 6px;
+      border-right: 1px solid #111;
+      border-bottom: 1px solid #111;
+      background: #bfbfbf;
+      font-weight: 700;
+    }
+
+    .table-head:last-of-type {
+      border-right: 0;
+    }
+
+    .table-body {
+      min-height: 226px;
+      border-right: 1px solid #111;
+    }
+
+    .table-body:last-of-type {
+      border-right: 0;
+    }
+
+    .totals {
+      display: grid;
+      grid-template-columns: 54% 22.5% 23.5%;
+      border-bottom: 2px solid #111;
+      margin-top: -2px;
+    }
+
+    .total-blank {
+      border-right: 1px solid #111;
+    }
+
+    .total-cell {
+      min-height: 29px;
+      padding: 5px 6px;
+      border-right: 1px solid #111;
+      background: #bfbfbf;
+      font-weight: 700;
+    }
+
+    .total-cell:last-child {
+      border-right: 0;
+    }
+
+    .net-row {
+      display: grid;
+      grid-template-columns: 54% 46%;
+      border-bottom: 2px solid #111;
+    }
+
+    .net-label {
+      min-height: 28px;
+      padding: 6px;
+      border-right: 1px solid #111;
+      background: #bfbfbf;
+      font-weight: 700;
+    }
+
+    .net-value {
+      min-height: 28px;
+      background: #d9d9d9;
+    }
+
+    .receipt {
+      min-height: 45px;
+      display: grid;
+      grid-template-columns: 1fr 170px 1fr;
+      align-items: end;
+      gap: 16px;
+      padding: 9px 8px 7px;
+      border-bottom: 2px solid #111;
+    }
+
+    .date {
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .date span {
+      display: inline-block;
+      width: 38px;
+      border-bottom: 1px solid #111;
+    }
+
+    .signature {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .signature-line {
+      flex: 1;
+      border-bottom: 1px solid #111;
+      transform: translateY(-2px);
+    }
+
+    .base-row {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      min-height: 40px;
+      align-items: center;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .base-row div {
+      padding: 4px 5px;
+    }
+
+    @media print {
+      body {
+        min-height: auto;
+        background: #fff;
+      }
+
+      .page {
+        width: 100%;
+        max-width: none;
+        padding: 0;
+      }
+
+      .holerite {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="holerite" aria-label="Demonstrativo de pagamento">
+      <header class="header">
+        <div class="company">EMPRESA CAPITALISTA DE EXPLORAÇÃO DO TRABALHO</div>
+        <div class="cnpj">CNPJ: 66.666.666/0001-66</div>
+        <div class="statement-title">Demonstrativo de Pagamento</div>
+      </header>
+
+      <section class="info-grid" aria-label="Dados do funcionário e período">
+        <div class="info-row">
+          <div class="cell">Func:<span class="line"></span></div>
+          <div class="cell"></div>
+          <div class="cell">Período:<span class="line"></span></div>
+        </div>
+        <div class="info-row">
+          <div class="cell">Cargo:<span class="line"></span></div>
+          <div class="cell">Matrícula:<span class="line"></span></div>
+          <div class="cell">CTPS:<span class="line"></span></div>
+        </div>
+        <div class="info-row">
+          <div class="cell">Depto:<span class="line"></span></div>
+          <div class="cell">Admissão:<span class="line"></span></div>
+          <div class="cell">CPF:<span class="line"></span></div>
+        </div>
+      </section>
+
+      <section class="payment-table" aria-label="Verbas do pagamento">
+        <div class="table-head">Verbas</div>
+        <div class="table-head">Referência</div>
+        <div class="table-head">Vencimentos</div>
+        <div class="table-head">Descontos</div>
+        <div class="table-body"></div>
+        <div class="table-body"></div>
+        <div class="table-body"></div>
+        <div class="table-body"></div>
+      </section>
+
+      <section class="totals" aria-label="Totais de vencimentos e descontos">
+        <div class="total-blank"></div>
+        <div class="total-cell">Total:</div>
+        <div class="total-cell">Total:</div>
+      </section>
+
+      <section class="net-row" aria-label="Valor líquido">
+        <div class="net-label">Valor Líquido</div>
+        <div class="net-value"></div>
+      </section>
+
+      <section class="receipt" aria-label="Recibo">
+        <div>Recebi o valor líquido, acima descrito em</div>
+        <div class="date"><span></span> / <span></span> / <span></span></div>
+        <div class="signature">
+          <span>Assinatura:</span>
+          <span class="signature-line"></span>
+        </div>
+      </section>
+
+      <footer class="base-row">
+        <div>Salário Base</div>
+        <div>Sal. Contr. INSS</div>
+        <div>Base Cálc. FGTS</div>
+        <div>FGTS do Mês</div>
+        <div>Base Cálc. IRRF</div>
+        <div>Faixa IRRF</div>
+        <div></div>
+      </footer>
+    </section>
+  </main>
+</body>
+</html>

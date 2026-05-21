@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastros</title>
+    <link rel="stylesheet" href="/css/cadastros.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR CENTRALIZADA -->
+    <div id="sidebar-container"></div>
+    <script src="/js/sidebar.js"></script>
+
+    <!-- CONTEÚDO -->
+    <div class="main">
+
+    <div class="top">
+        <h1>Cadastros</h1>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <span class="tab active" onclick="trocarAba('funcionario')">Funcionário</span>
+        <span class="tab" onclick="trocarAba('conta')">Conta</span>
+    </div>
+
+    <div class="container">
+
+        <!-- FORM FUNCIONÁRIO -->
+        <div class="card form ativo" id="formFuncionario">
+            <h2>Cadastrar Funcionário</h2>
+
+            <input id="nome" placeholder="Nome">
+            <input id="cpf" placeholder="CPF">
+            <input type="date" id="data">
+            <input id="conta" placeholder="Conta">
+            <input id="salario" placeholder="Salário">
+
+            <button class="btn" onclick="cadastrarFuncionario()">Cadastrar</button>
+        </div>
+
+        <!-- FORM CONTA -->
+        <div class="card form" id="formConta">
+            <h2>Cadastrar Conta</h2>
+
+            <input id="codigoConta" placeholder="Código (Ex: 1.1.01)">
+            <input id="nomeConta" placeholder="Nome da conta">
+            <select id="tipoConta">
+                <option value="">Selecione o Tipo</option>
+                <option value="Ativo">Ativo</option>
+                <option value="Passivo">Passivo</option>
+                <option value="Receita">Receita</option>
+                <option value="Despesa">Despesa</option>
+            </select>
+            <input id="saldoInicialConta" placeholder="Saldo Inicial (R$ 0,00)">
+            <textarea id="descricaoConta" placeholder="Descrição / Observações" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 10px;"></textarea>
+
+            <div style="display: flex; gap: 10px;">
+                <button class="btn" id="btnSalvarConta" onclick="cadastrarConta()" style="flex: 3;">Cadastrar Conta</button>
+                <button class="btn" id="btnCancelarEdicaoConta" onclick="cancelarEdicaoConta()" style="flex: 1; background: #94a3b8; display: none;">Cancelar</button>
+            </div>
+        </div>
+
+        <!-- LISTA DINÂMICA -->
+        <div class="card">
+            <h2 id="tituloLista">Funcionários</h2>
+
+            <table>
+                <thead id="cabecalhoTabela">
+                    <tr>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Data</th>
+                        <th>Conta</th>
+                        <th>Salário</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+<div id="modal" class="modal">
+    <div class="modal-box">
+        <span id="modalIcon"></span>
+        <p id="modalTexto"></p>
+        <div id="modalFooter" style="display: flex; gap: 10px; justify-content: center;">
+            <button id="btnModalOk" onclick="fecharModal()">OK</button>
+            <button id="btnModalCancelar" onclick="fecharModal()" style="display: none; background: #94a3b8;">Cancelar</button>
+        </div>
+    </div>
+</div>
+<script src="/js/cadastros.js?v=2"></script>
+
+</body>
+</html>

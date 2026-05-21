@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Diário</title>
+    <link rel="stylesheet" href="/css/diario.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR CENTRALIZADA -->
+    <div id="sidebar-container"></div>
+    <script src="/js/sidebar.js"></script>
+
+    <main class="main">
+
+        <div class="top">
+            <h1>Diário</h1>
+            <button class="btn-voltar" onclick="gerarPDF()">Gerar PDF</button>
+        </div>
+
+        <div class="lista" id="listaDiario"></div>
+
+    </main>
+
+    <!-- Biblioteca PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script src="/js/diario.js"></script>
+
+</body>
+
+</html>

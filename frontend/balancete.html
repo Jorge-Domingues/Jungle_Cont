@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Balancete</title>
+    <link rel="stylesheet" href="/css/balancete.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR CENTRALIZADA -->
+    <div id="sidebar-container"></div>
+    <script src="/js/sidebar.js"></script>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOPO -->
+        <div class="top">
+            <div>
+                <h1>Balancete <span>(30/01/2024)</span></h1>
+                <p>Posição após todas as operações da Empresa NRM S.A.</p>
+            </div>
+
+        </div>
+
+        <!-- CONTEÚDO -->
+        <div class="content">
+
+            <!-- TABELA -->
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 100px;">CÓDIGO</th>
+                            <th>CONTA</th>
+                            <th>DÉBITO (ENTRADAS)</th>
+                            <th>CRÉDITO (SAÍDAS)</th>
+                            <th>SALDO ATUAL</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="balanceteBody"></tbody>
+                </table>
+            </div>
+
+            <!-- LATERAL DIREITA -->
+            <div class="side">
+
+                <div class="card">
+                    <h3>Resumo Patrimonial</h3>
+                    <p>Carregando dados...</p>
+                </div>
+
+                <div class="card">
+                    <h3>Equação Fundamental</h3>
+                    <p>Processando...</p>
+                </div>
+
+                <div class="card">
+                    <h3>Observação</h3>
+                    <p>O patrimônio líquido representa os recursos próprios da empresa após todas as operações.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+    <script src="/js/balancete.js"></script>
+</body>
+</html>

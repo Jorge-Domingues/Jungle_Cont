@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html lang="pt-br"> <!--LINGUAGEM DO SITE-->
+
+<head>
+    <meta charset="UTF-8"> <!--TIPO DOS CARACTERES-->
+    <meta http-equiv="X-UA-Compatible" content="IE-edge"> <!--PARA O SITE SER COMPATIVEL COM INTERNET EXPLORER-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--PARA A TELA SE ADAPTAR AO DISPOSITIVO-->
+    <meta name="description" content="Site contabilidade"> <!--PARA TER A DESCRIÇÃO DO SITE-->
+    <meta name="keywords" content="Contabilidade,site,empresa,contabil"> <!--PALAVRAS CHAVES-->
+    <meta name="author" content="Natan"> <!--AUTOR DA PAGINA-->
+    <title>Login - Jungle Cont</title> <!--TITULO DA PAGINA-->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <!--DIV LADO ESQUERDO-->
+    <div class="left">
+        <div class="left-content">
+            <div class="logo-container">
+                <img src="/img/logo.png">
+            </div>
+            <h1>Gestão inteligente para sua empresa crescer</h1>
+            <p>Organizando hoje, crescendo amanhã.</p>
+        </div>
+        
+    </div>
+
+    <!--DIV LADO DIREITO-->
+    <div class="right">
+        <form class="login-box" onsubmit="logar(); return false;">
+            <h2>Entrar</h2>
+
+            <div class="input-group">
+                <label>Login</label>
+                <input type="text" placeholder="Insira seu login" id="login">
+            </div>
+
+            <div class="input-group">
+                <label>Senha</label>
+                <input type="password" placeholder="Insira sua senha" id="senha">
+            </div>
+
+            <button type="submit">Entrar</button>
+
+            <div class="links">
+                <a href="#">Esqueci minha senha</a>
+            </div>
+        </form>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-box">
+            <span id="modalIcon"></span>
+            <p id="modalTexto"></p>
+            <button onclick="fecharModal()">OK</button>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+
+</html>

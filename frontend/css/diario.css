@@ -1,0 +1,176 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    display: flex;
+    background: #f4f4f4;
+    overflow-y: auto;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:250px;
+    background:linear-gradient(180deg,#0f3d1e,#2c8b4b);
+    color:white;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+}
+
+/* LOGO */
+.sidebar h2{
+    font-size:22px;
+    margin-bottom:30px;
+    font-weight:500;
+    opacity:0.95;
+}
+
+/* MENU */
+.sidebar nav{
+    flex: 1;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.logout-link {
+    margin-top: auto !important;
+    color: #ff6b6b !important;
+    font-weight: 500;
+}
+
+.logout-link:hover {
+    background: rgba(255, 107, 107, 0.1) !important;
+}
+
+/* LINKS */
+.sidebar a{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 14px;
+    border-radius:10px;
+    text-decoration:none;
+    color:rgba(255,255,255,0.85);
+    font-size:14px;
+    transition:all 0.2s ease;
+}
+
+/* ÍCONES */
+.sidebar a i{
+    width:18px;
+    text-align:center;
+    opacity:0.8;
+}
+
+/* HOVER (leve, sem exagero) */
+.sidebar a:hover{
+    background:rgba(255,255,255,0.08);
+    color:white;
+}
+
+/* ATIVO (bem mais suave) */
+.sidebar .active{
+    background:rgba(255,255,255,0.12);
+    color:white;
+    font-weight:500;
+}
+
+/* EFEITO SUTIL LATERAL */
+.sidebar .active::before{
+    content:"";
+    position:absolute;
+    left:0;
+    width:3px;
+    height:24px;
+    background:#ffb347;
+    border-radius:0 4px 4px 0;
+}
+
+/* POSITION FIX */
+.sidebar a{
+    position:relative;
+}
+/* MAIN */
+.main {
+    flex: 1;
+    padding: 25px;
+}
+
+/* TOPO */
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn-voltar {
+    background: linear-gradient(90deg, #ff7a00, #ffb347);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+/* LISTA */
+.lista {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* ITEM */
+.item {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* LEFT */
+.left {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.data {
+    font-size: 14px;
+    color: gray;
+}
+
+.left h3 {
+    margin: 5px 0;
+}
+
+.historico {
+    color: #555;
+    font-size: 14px;
+}
+
+/* RIGHT */
+.right {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.valor {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.subvalor {
+    font-size: 14px;
+    color: gray;
+}

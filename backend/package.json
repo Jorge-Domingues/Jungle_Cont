@@ -1,0 +1,15 @@
+{
+  "name": "jungle-cont-api",
+  "version": "1.0.0",
+  "description": "API com Node puro",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "mariadb": "^3.3.0",
+    "nodemon": "^3.1.0",
+    "bcryptjs": "^2.4.3"
+  }
+}

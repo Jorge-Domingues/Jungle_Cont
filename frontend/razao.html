@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Razão</title>
+    <link rel="stylesheet" href="/css/razao.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR CENTRALIZADA -->
+    <div id="sidebar-container"></div>
+    <script src="/js/sidebar.js"></script>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOPO -->
+        <!-- FILTRO -->
+        <div class="card selector-card" style="margin-bottom: 25px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+            <div style="display: flex; gap: 15px; align-items: flex-end;">
+                <div style="flex: 1;">
+                    <label style="display: block; font-size: 0.8rem; font-weight: 600; color: #64748b; margin-bottom: 8px;">SELECIONAR CONTA</label>
+                    <select id="selectConta" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <option value="">Carregando contas...</option>
+                    </select>
+                </div>
+                <button onclick="carregarRazao()" style="padding: 12px 25px; background: #10b981; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                    Filtrar Razão
+                </button>
+            </div>
+        </div>
+
+        <!-- GRID -->
+        <div class="grid" id="gridRazao"></div>
+    </main>
+
+    <script src="/js/razao.js?v=2"></script>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciar Usuários</title>
+    <link rel="stylesheet" href="/css/cadastros.css"> <!-- Reutilizando o estilo de cadastros -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!-- SIDEBAR CENTRALIZADA -->
+    <div id="sidebar-container"></div>
+    <script src="/js/sidebar.js"></script>
+
+    <div class="main">
+        <div class="top">
+            <h1>Gerenciar Usuários</h1>
+        </div>
+
+        <div class="container">
+            <div class="card form ativo">
+                <h2>Cadastrar Novo Usuário</h2>
+                <input id="newLogin" placeholder="Login / Usuário">
+                <input type="password" id="newSenha" placeholder="Senha">
+                <button class="btn" onclick="cadastrarUsuario()">Cadastrar Usuário</button>
+            </div>
+
+            <div class="card">
+                <h2>Usuários do Sistema</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Login</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaUsuarios"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-box">
+            <span id="modalIcon"></span>
+            <p id="modalTexto"></p>
+            <button onclick="fecharModal()">OK</button>
+        </div>
+    </div>
+
+    <script src="/js/usuarios.js"></script>
+</body>
+</html>

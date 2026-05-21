@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Folha de Pagamento</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/folha.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* ===== OVERLAY HOLERITE ===== */
+        #holerite-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 24px;
+        }
+        #holerite-overlay.show {
+            display: flex;
+        }
+        .hol-wrapper {
+            position: relative;
+            width: 960px;
+            max-width: 100%;
+            background: #f2f2f2;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            animation: holSlideIn 0.25s ease;
+        }
+        @keyframes holSlideIn {
+            from { opacity: 0; transform: translateY(24px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .hol-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 18px;
+            background: #1e293b;
+            color: #f8fafc;
+            font-family: Arial, sans-serif;
+        }
+        .hol-toolbar span { font-weight: 700; font-size: 14px; }
+        .hol-toolbar-actions { display: flex; gap: 10px; }
+        .hol-btn {
+            display: flex; align-items: center; gap: 7px;
+            padding: 8px 18px;
+            border: none; border-radius: 6px;
+            font-weight: 700; font-size: 13px;
+            cursor: pointer; transition: opacity .15s;
+        }
+        .hol-btn:hover { opacity: 0.85; }
+        .hol-btn-print { background: #10b981; color: #fff; }
+        .hol-btn-close  { background: #ef4444; color: #fff; }
+        /* Holerite doc */
+        .hol-page {
+            width: 100%;
+            padding: 16px;
+            background: #f2f2f2;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 10px;
+            color: #111;
+        }
+        .hol-doc {
+            width: 100%;
+            border: 3px solid #111;
+            background: #fff;
+        }
+        .hol-header {
+            min-height: 108px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: flex-start;
+            padding-top: 8px;
+            border-bottom: 2px solid #111;
+            text-align: center; font-weight: 700; line-height: 1.35;
+        }
+        .hol-company { font-size: 13px; text-transform: uppercase; letter-spacing: 0.2px; }
+        .hol-cnpj { margin-top: 4px; font-size: 13px; }
+        .hol-title { margin-top: auto; margin-bottom: 2px; font-size: 11px; font-weight: 700; }
+        .hol-info-grid {
+            display: grid;
+            grid-template-columns: 58% 19% 23%;
+            border-bottom: 2px solid #111;
+        }
+        .hol-cell {
+            min-height: 24px; padding: 3px 6px;
+            border-right: 1px solid #111;
+            border-bottom: 1px solid #111;
+            font-weight: 700;
+        }
+        .hol-cell:nth-child(3n) { border-right: 0; }
+        .hol-info-grid .hol-info-row:last-child .hol-cell { border-bottom: 0; }
+        .hol-line { display: inline-block; min-width: 55%; height: 10px; vertical-align: bottom; }
+        .hol-val { font-weight: 400; color: #333; }
+        .hol-payment-table {
+            display: grid;
+            grid-template-columns: 43% 11% 22.5% 23.5%;
+            min-height: 220px;
+            border-bottom: 2px solid #111;
+        }
+        .hol-thead {
+            min-height: 24px; display: flex; align-items: center; justify-content: center;
+            padding: 3px 6px;
+            border-right: 1px solid #111;
+            border-bottom: 1px solid #111;
+            background: #bfbfbf; font-weight: 700;
+        }
+        .hol-thead:last-of-type { border-right: 0; }
+        .hol-tbody { border-right: 1px solid #111; padding: 2px 0; }
+        .hol-tbody:last-of-type { border-right: 0; }
+        .hol-row { display: flex; padding: 1px 6px; }
+        .hol-totals {
+            display: grid;
+            grid-template-columns: 54% 22.5% 23.5%;
+            border-bottom: 2px solid #111;
+        }
+        .hol-total-blank { border-right: 1px solid #111; }
+        .hol-total-cell {
+            min-height: 29px; padding: 5px 6px;
+            border-right: 1px solid #111;
+            background: #bfbfbf; font-weight: 700;
+        }
+        .hol-total-cell:last-child { border-right: 0; }
+        .hol-net-row {
+            display: grid;
+            grid-template-columns: 54% 46%;
+            border-bottom: 2px solid #111;
+        }
+        .hol-net-label {
+            min-height: 28px; padding: 6px;
+            border-right: 1px solid #111;
+            background: #bfbfbf; font-weight: 700;
+        }
+        .hol-net-value { min-height: 28px; padding: 6px; background: #d9d9d9; font-weight: 700; }
+        .hol-receipt {
+            min-height: 45px;
+            display: grid; grid-template-columns: 1fr 170px 1fr;
+            align-items: end; gap: 16px; padding: 9px 8px 7px;
+            border-bottom: 2px solid #111;
+        }
+        .hol-date { text-align: center; white-space: nowrap; }
+        .hol-date span { display: inline-block; width: 38px; border-bottom: 1px solid #111; }
+        .hol-signature { display: flex; align-items: flex-end; gap: 6px; white-space: nowrap; }
+        .hol-signature-line { flex: 1; border-bottom: 1px solid #111; transform: translateY(-2px); }
+        .hol-base-row {
+            display: grid; grid-template-columns: repeat(7, 1fr);
+            min-height: 40px; align-items: center;
+            text-align: center; font-weight: 700;
+        }
+        .hol-base-row div { padding: 4px 5px; border-right: 1px solid #ccc; }
+        .hol-base-row div:last-child { border-right: 0; }
+        @media print {
+            body > *:not(#holerite-overlay) { display: none !important; }
+            #holerite-overlay { display: block !important; position: static !important; background: none !important; padding: 0 !important; backdrop-filter: none !important; }
+            .hol-wrapper { box-shadow: none !important; border-radius: 0 !important; width: 100% !important; }
+            .hol-toolbar { display: none !important; }
+            .hol-page { padding: 0 !important; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR CENTRALIZADA -->
+    <div id="sidebar-container"></div>
+    <script src="/js/sidebar.js"></script>
+
+    <!-- CONTEÚDO -->
+    <div class="main">
+
+        <div class="top">
+            <h1>Folha de Pagamento</h1>
+            <p>Cálculo automático de encargos e salários líquidos</p>
+        </div>
+
+        <div class="container">
+            
+            <!-- INPUTS DO CONTADOR -->
+            <div class="card inputs-card">
+                <div class="form-row">
+                    <div class="field-group">
+                        <label>Selecionar Funcionário</label>
+                        <select id="selectFuncionario" onchange="calcularTudo()">
+                            <option value="">Carregando...</option>
+                        </select>
+                    </div>
+
+                    <div class="field-group">
+                        <label>Conta para Pagamento</label>
+                        <select id="selectContaPagamento">
+                            <option value="">Carregando contas...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="horasExtras">Horas Extras (50%)</label>
+                        <input type="number" id="horasExtras" value="0" oninput="calcularTudo()">
+                    </div>
+                    <div class="form-group">
+                        <label for="faltas">Faltas (Horas)</label>
+                        <input type="number" id="faltas" value="0" oninput="calcularTudo()">
+                    </div>
+                    <div class="form-group">
+                        <label for="bonus">Bonificações (R$)</label>
+                        <input type="number" id="bonus" value="0" oninput="calcularTudo()">
+                    </div>
+                    <div class="form-group check-group">
+                        <label for="descontarVT">Vale Transporte?</label>
+                        <input type="checkbox" id="descontarVT" onchange="calcularTudo()">
+                        <span>Sim (6%)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-layout">
+                
+                <!-- CARD DE RESUMO -->
+                <div class="card summary-card">
+                    <h2>Resumo do Cálculo</h2>
+                    <div class="summary-item">
+                        <span>Salário Base</span>
+                        <span id="resumoSalarioBase" class="val">R$ 0,00</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Desconto INSS</span>
+                        <span id="resumoINSS" class="val negative">- R$ 0,00</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>FGTS (8% - Provisão)</span>
+                        <span id="resumoFGTS" class="val info">R$ 0,00</span>
+                    </div>
+                    <hr>
+                    <div class="summary-item total">
+                        <span>Líquido a Receber</span>
+                        <span id="resumoLiquido" class="val highlight">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <!-- TABELA DETALHADA -->
+                <div class="card details-card">
+                    <h2>Demonstrativo</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rubrica</th>
+                                <th>Tipo</th>
+                                <th>Referência</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpoFolha">
+                            <!-- Inserido via JS -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="actions">
+                        <button class="btn btn-save" onclick="gravarFolha()" id="btnGravar" style="margin-right: 10px; background: #3b82f6;">
+                            <i class="fa fa-save"></i> Gravar Folha
+                        </button>
+                        <button class="btn btn-print" onclick="abrirHolerite()">
+                            <i class="fa fa-print"></i> Imprimir Holerite
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MODAL DE FEEDBACK -->
+    <div id="modal" class="modal">
+        <div class="modal-box">
+            <span id="modalIcon"></span>
+            <p id="modalTexto"></p>
+            <button onclick="fecharModal()">OK</button>
+        </div>
+    </div>
+
+    <!-- OVERLAY HOLERITE -->
+    <div id="holerite-overlay">
+        <div class="hol-wrapper">
+            <!-- TOOLBAR -->
+            <div class="hol-toolbar">
+                <span><i class="fa fa-file-invoice"></i>&nbsp; Holerite — Demonstrativo de Pagamento</span>
+                <div class="hol-toolbar-actions">
+                    <button class="hol-btn hol-btn-print" onclick="window.print()">
+                        <i class="fa fa-print"></i> Imprimir
+                    </button>
+                    <button class="hol-btn hol-btn-close" onclick="fecharHolerite()">
+                        <i class="fa fa-times"></i> Fechar
+                    </button>
+                </div>
+            </div>
+            <!-- DOCUMENTO -->
+            <div class="hol-page">
+                <section class="hol-doc">
+                    <!-- CABEÇALHO DA EMPRESA -->
+                    <header class="hol-header">
+                        <div class="hol-company" id="holEmpresa">EMPRESA NRM S.A.</div>
+                        <div class="hol-cnpj" id="holCNPJ">CNPJ: 00.000.000/0001-00</div>
+                        <div class="hol-title">Demonstrativo de Pagamento</div>
+                    </header>
+
+                    <!-- DADOS DO FUNCIONÁRIO -->
+                    <section class="hol-info-grid">
+                        <div class="hol-info-row">
+                            <div class="hol-cell">Func: <span class="hol-val" id="holNome"></span></div>
+                            <div class="hol-cell"></div>
+                            <div class="hol-cell">Período: <span class="hol-val" id="holPeriodo"></span></div>
+                        </div>
+                        <div class="hol-info-row">
+                            <div class="hol-cell">Cargo: <span class="hol-val" id="holCargo">—</span></div>
+                            <div class="hol-cell">Matrícula: <span class="hol-val" id="holMatricula"></span></div>
+                            <div class="hol-cell">CTPS: <span class="hol-val">—</span></div>
+                        </div>
+                        <div class="hol-info-row">
+                            <div class="hol-cell">Depto: <span class="hol-val">—</span></div>
+                            <div class="hol-cell">Admissão: <span class="hol-val" id="holAdmissao"></span></div>
+                            <div class="hol-cell">CPF: <span class="hol-val" id="holCPF"></span></div>
+                        </div>
+                    </section>
+
+                    <!-- TABELA DE VERBAS -->
+                    <section class="hol-payment-table">
+                        <div class="hol-thead">Verbas</div>
+                        <div class="hol-thead">Referência</div>
+                        <div class="hol-thead">Vencimentos</div>
+                        <div class="hol-thead">Descontos</div>
+                        <!-- Coluna Verbas -->
+                        <div class="hol-tbody" id="holVerbas"></div>
+                        <!-- Coluna Referência -->
+                        <div class="hol-tbody" id="holRefs"></div>
+                        <!-- Coluna Vencimentos -->
+                        <div class="hol-tbody" id="holVencimentos"></div>
+                        <!-- Coluna Descontos -->
+                        <div class="hol-tbody" id="holDescontos"></div>
+                    </section>
+
+                    <!-- TOTAIS -->
+                    <section class="hol-totals">
+                        <div class="hol-total-blank"></div>
+                        <div class="hol-total-cell">Total: <span id="holTotalVenc"></span></div>
+                        <div class="hol-total-cell">Total: <span id="holTotalDesc"></span></div>
+                    </section>
+
+                    <!-- LÍQUIDO -->
+                    <section class="hol-net-row">
+                        <div class="hol-net-label">Valor Líquido</div>
+                        <div class="hol-net-value" id="holLiquido"></div>
+                    </section>
+
+                    <!-- RECIBO -->
+                    <section class="hol-receipt">
+                        <div>Recebi o valor líquido, acima descrito em</div>
+                        <div class="hol-date">
+                            <span></span> / <span></span> / <span></span>
+                        </div>
+                        <div class="hol-signature">
+                            <span>Assinatura:</span>
+                            <span class="hol-signature-line"></span>
+                        </div>
+                    </section>
+
+                    <!-- RODAPÉ BASE -->
+                    <footer class="hol-base-row">
+                        <div>Salário Base<br><span id="holBaseSalario"></span></div>
+                        <div>Sal. Contr. INSS<br><span id="holBaseINSS"></span></div>
+                        <div>Base Cálc. FGTS<br><span id="holBaseFGTS"></span></div>
+                        <div>FGTS do Mês<br><span id="holValorFGTS"></span></div>
+                        <div>Base Cálc. IRRF<br><span id="holBaseIRRF"></span></div>
+                        <div>Faixa IRRF<br><span>Isento</span></div>
+                        <div></div>
+                    </footer>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/folha.js"></script>
+
+</body>
+</html>

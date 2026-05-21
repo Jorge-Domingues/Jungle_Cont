@@ -1,0 +1,104 @@
+<style>
+    /* CSS CENTRALIZADO DA SIDEBAR */
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: linear-gradient(180deg, #0f3d1e, #2c8b4b);
+        color: white;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        z-index: 1000;
+        box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+    }
+
+    .sidebar h2 {
+        font-size: 22px;
+        margin-bottom: 30px;
+        font-weight: 500;
+        opacity: 0.95;
+    }
+
+    .sidebar nav {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 14px;
+        transition: all 0.2s ease;
+        position: relative;
+    }
+
+    .sidebar a i {
+        width: 18px;
+        text-align: center;
+        opacity: 0.8;
+    }
+
+    .sidebar a:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: white;
+        transform: translateX(5px);
+    }
+
+    .sidebar .active {
+        background: rgba(255, 255, 255, 0.12);
+        color: white;
+        font-weight: 500;
+    }
+
+    .sidebar .active::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 3px;
+        height: 24px;
+        background: #ffb347;
+        border-radius: 0 4px 4px 0;
+    }
+
+    .logout-link {
+        margin-top: auto !important;
+        color: #ff6b6b !important;
+        font-weight: 500;
+    }
+
+    /* AJUSTE AUTOMÁTICO DO CONTEÚDO */
+    .main {
+        margin-left: 250px !important;
+    }
+
+    @media print {
+        .sidebar { display: none !important; }
+        .main { margin-left: 0 !important; }
+    }
+</style>
+
+<aside class="sidebar">
+    <h2>🌿 Jungle Cont</h2>
+    <nav>
+        <a href="/home.html" id="link-home"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="/cadastros.html" id="link-cadastros"><i class="fa-solid fa-folder"></i> Cadastros</a>
+        <a href="/fatos.html" id="link-fatos"><i class="fa-solid fa-file"></i> Fatos</a>
+        <a href="/diario.html" id="link-diario"><i class="fa-solid fa-book"></i> Diário</a>
+        <a href="/razao.html" id="link-razao"><i class="fa-solid fa-chart-column"></i> Razão</a>
+        <a href="/balancete.html" id="link-balancete"><i class="fa-solid fa-scale-balanced"></i> Balancete</a>
+        <a href="/folha.html" id="link-folha"><i class="fa-solid fa-calculator"></i> Folha</a>
+        <a href="/usuarios.html" id="link-usuarios"><i class="fa-solid fa-users-gear"></i> Usuários</a>
+        <a href="#" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+    </nav>
+</aside>

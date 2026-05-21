@@ -1,0 +1,207 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    display:flex;
+    background:#f4f4f4;
+    overflow: hidden;
+}
+
+/* MAIN */
+.main{
+    flex:1;
+    padding:25px;
+}
+
+/* TOPO */
+.top{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.btn{
+    background:linear-gradient(90deg,#ff7a00,#ffb347);
+    border:none;
+    padding:10px 20px;
+    border-radius:10px;
+    color:white;
+    cursor:pointer;
+}
+
+/* TABS */
+.tabs{
+    display:flex;
+    gap:20px;
+    margin-bottom:20px;
+}
+
+.tab{
+    cursor:pointer;
+    padding:5px;
+}
+
+.tab.active{
+    border-bottom:3px solid #2c8b4b;
+    font-weight:bold;
+}
+
+/* CARDS */
+.card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    margin-bottom:20px;
+}
+
+/* FORM */
+.container{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.form{
+    opacity:0;
+    transform:translateX(20px);
+    position:absolute;
+    width:100%;
+    transition:0.3s;
+    pointer-events:none;
+}
+
+.form.ativo{
+    opacity:1;
+    transform:translateX(0);
+    position:relative;
+    pointer-events:all;
+}
+
+input, select{
+    width:100%;
+    padding:10px;
+    margin-bottom:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+/* BOTÃO EXCLUIR ESTILIZADO */
+.btn-delete {
+    background: #fff;
+    color: #dc2626;
+    border: 1px solid #dc2626;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-delete i {
+    font-size: 14px;
+}
+
+.btn-delete:hover {
+    background: #dc2626;
+    color: white;
+}
+
+/* TABELA */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th, td{
+    padding:10px;
+    border-bottom:1px solid #eee;
+    text-align:left;
+}
+
+/* modal */
+.modal {
+    z-index: 9999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+.modal.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-box {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    animation: scaleIn 0.3s ease;
+}
+
+.modal-box span {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.modal-box p {
+    margin-bottom: 20px;
+}
+
+.modal-box button {
+    background: linear-gradient(90deg, #ff7a00, #ffb347);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+}
+
+.sucesso span {
+    color: #2c8b4b;
+}
+
+.erro span {
+    color: #dc2626;
+}
+
+.atencao span {
+    color: #f59e0b;
+}
+
+.modal-box button:hover {
+    filter: brightness(0.9);
+    transform: translateY(-2px);
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

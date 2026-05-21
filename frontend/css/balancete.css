@@ -1,0 +1,239 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    display: flex;
+    background: #f4f4f4;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:250px;
+    height:100vh;
+    background:linear-gradient(180deg,#0f3d1e,#2c8b4b);
+    color:white;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+}
+
+/* LOGO */
+.sidebar h2{
+    font-size:22px;
+    margin-bottom:30px;
+    font-weight:500;
+    opacity:0.95;
+}
+
+/* MENU */
+.sidebar nav{
+    flex: 1;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.logout-link {
+    margin-top: auto !important;
+    color: #ff6b6b !important;
+    font-weight: 500;
+}
+
+.logout-link:hover {
+    background: rgba(255, 107, 107, 0.1) !important;
+}
+
+/* LINKS */
+.sidebar a{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 14px;
+    border-radius:10px;
+    text-decoration:none;
+    color:rgba(255,255,255,0.85);
+    font-size:14px;
+    transition:all 0.2s ease;
+}
+
+/* ÍCONES */
+.sidebar a i{
+    width:18px;
+    text-align:center;
+    opacity:0.8;
+}
+
+/* HOVER (leve, sem exagero) */
+.sidebar a:hover{
+    background:rgba(255,255,255,0.08);
+    color:white;
+}
+
+/* ATIVO (bem mais suave) */
+.sidebar .active{
+    background:rgba(255,255,255,0.12);
+    color:white;
+    font-weight:500;
+}
+
+/* EFEITO SUTIL LATERAL */
+.sidebar .active::before{
+    content:"";
+    position:absolute;
+    left:0;
+    width:3px;
+    height:24px;
+    background:#ffb347;
+    border-radius:0 4px 4px 0;
+}
+
+/* POSITION FIX */
+.sidebar a{
+    position:relative;
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+    padding: 25px;
+}
+
+/* TOPO */
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top h1 span {
+    font-size: 18px;
+    color: gray;
+}
+
+.btn-voltar {
+    background: linear-gradient(90deg, #ff7a00, #ffb347);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+/* CONTENT */
+.content {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* TABELA */
+.table-card {
+    flex: 3;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #1f7a3a;
+    color: white;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.total {
+    background: #e8f5ec;
+    font-weight: bold;
+}
+
+/* CORES */
+.positivo {
+    color: green;
+    font-weight: bold;
+}
+
+.negativo {
+    color: red;
+    font-weight: bold;
+}
+
+/* SIDE */
+.side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+}
+
+.card p {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+}
+
+/* EQUAÇÃO */
+.equacao {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.ativo {
+    background: #d4edda;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+.passivo {
+    background: #f8d7da;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+.pl {
+    background: #d1ecf1;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+/* TIMELINE */
+.timeline {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+}
+
+.item {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    width: 120px;
+    text-align: center;
+}
+
+.item span {
+    font-weight: bold;
+}

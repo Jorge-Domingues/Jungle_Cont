@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Fatos Contábeis</title>
+    <link rel="stylesheet" href="/css/fatos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR CENTRALIZADA -->
+    <div id="sidebar-container"></div>
+    <script src="/js/sidebar.js"></script>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOPO -->
+        <div class="top">
+            <h1>Fatos Contábeis</h1>
+        </div>
+
+        <!-- FORM -->
+        <div class="form-card">
+            <h2>Tipo</h2>
+
+            <div class="form-grid">
+
+                <div>
+                    <label>CONTA</label>
+                    <select id="conta">
+                        <option value="">Carregando contas...</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>TIPO</label>
+                    <select id="tipo">
+                        <option value="">Selecione</option>
+                        <option value="entrada">Entrada (Débito)</option>
+                        <option value="saida">Saída (Crédito)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>DESCRIÇÃO</label>
+                    <input type="text" id="historico" placeholder="Descrição">
+                </div>
+
+                <div>
+                    <label>DATA</label>
+                    <input type="date" id="data">
+                </div>
+
+                <div>
+                    <label>VALOR</label>
+                    <input type="text" id="valor" placeholder="R$ 0,00">
+                </div>
+
+            </div>
+
+            <button class="btn-primary" onclick="registrarFato()">Registrar Fato</button>
+        </div>
+
+        <!-- TABELA -->
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Conta</th>
+                        <th>Tipo</th>
+                        <th>Descrição</th>
+                        <th>Data</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tabelaFatos">
+                    <!-- AGORA VAI SER PREENCHIDO PELO JS -->
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <!-- MODAL -->
+    <div id="modal" class="modal">
+        <div class="modal-box">
+            <span id="modalIcon"></span>
+            <p id="modalTexto"></p>
+            <button onclick="fecharModal()">OK</button>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="/js/fatos.js"></script>
+
+</body>
+</html>

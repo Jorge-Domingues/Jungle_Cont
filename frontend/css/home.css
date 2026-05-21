@@ -1,0 +1,94 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    display:flex;
+    background:#f4f4f4;
+}
+
+/* ESTILOS GERAIS */
+.main{
+    flex:1;
+    padding:25px;
+}
+
+/* TOPO */
+.top{
+    margin-bottom:20px;
+}
+
+/* CARDS */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* CORES DOS CARDS */
+.cards .card{
+    border-left:6px solid transparent;
+}
+
+.card.saldo{ border-left-color:#2c8b4b; }
+.card.entrada{ border-left-color:#16a34a; }
+.card.saida{ border-left-color:#dc2626; }
+
+.card.saldo i{ color:#2c8b4b; }
+.card.entrada i{ color:#16a34a; }
+.card.saida i{ color:#dc2626; }
+
+.card i{
+    font-size:22px;
+    margin-bottom:10px;
+}
+
+.card h3{
+    margin-bottom:5px;
+}
+
+.card p{
+    font-size:20px;
+    font-weight:bold;
+}
+
+/* VALORES */
+.saldo-valor{ color:#2c8b4b; }
+.entrada-valor{ color:#16a34a; }
+.saida-valor{ color:#dc2626; }
+
+/* DESTAQUE */
+.destaque{
+    margin-bottom:20px;
+}
+
+/* LISTA */
+#ultimos div{
+    display:flex;
+    justify-content:space-between;
+    padding:10px 0;
+    border-bottom:1px solid #eee;
+}
+
+#ultimos span:last-child{
+    font-weight:bold;
+}
+
+.positivo{
+    color:#16a34a;
+}
+
+.negativo{
+    color:#dc2626;
+}

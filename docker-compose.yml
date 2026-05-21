@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    image: mariadb:latest
+    container_name: jungle_cont_db
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: rootpassword
+      MARIADB_DATABASE: jungle_cont
+      MARIADB_USER: jungle_user
+      MARIADB_PASSWORD: jungle_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    image: node:20
+    container_name: jungle_cont_backend
+    working_dir: /app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_USER: jungle_user
+      DB_PASSWORD: jungle_password
+      DB_NAME: jungle_cont
+      DB_PORT: 3306
+    volumes:
+      - ./backend:/app
+      - ./frontend:/frontend
+    # Instala as dependências (node_modules) e depois inicia o servidor
+    command: sh -c "npm install && npm run dev"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
