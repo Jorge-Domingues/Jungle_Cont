@@ -86,7 +86,7 @@ Jungle Cont/
 
 ## Banco de Dados
 
-![Esquema do Banco de Dados](jungle Cont db.png)
+![Esquema do Banco de Dados](diagram-db.png)
 
 O sistema utiliza o **MariaDB** como banco de dados relacional. A estrutura é organizada nas seguintes tabelas:
 
