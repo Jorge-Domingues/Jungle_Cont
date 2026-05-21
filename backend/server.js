@@ -91,9 +91,9 @@ const server = http.createServer(async (req, res) => {
     // Rota de teste
     if (pathName === '/api/health' && req.method === 'GET') {
         console.log("[API] GET /api/health iniciou");
+        let conn;
         try {
-            const conn = await pool.getConnection();
-            conn.release();
+            conn = await pool.getConnection();
             res.writeHead(200, { 'Content-Type': 'application/json' });
             console.log("[API] GET /api/health terminou");
             res.end(JSON.stringify({ status: 'API Node.js pura rodando e conectada ao banco MariaDB!' }));
@@ -101,6 +101,8 @@ const server = http.createServer(async (req, res) => {
             console.error("[API] ERRO /api/health:", err);
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: 'Erro ao conectar ao banco de dados', detalhe: err.message }));
+        } finally {
+            if (conn) conn.release();
         }
         return;
     }
@@ -109,9 +111,7 @@ const server = http.createServer(async (req, res) => {
     if (pathName === '/api/usuarios' && req.method === 'GET') {
         console.log("[API] GET /api/usuarios iniciou");
         try {
-            const conn = await pool.getConnection();
-            const rows = await conn.query("SELECT id, login FROM usuarios");
-            conn.release();
+            const rows = await pool.query("SELECT id, login FROM usuarios");
             res.writeHead(200, { 'Content-Type': 'application/json' });
             console.log("[API] GET /api/usuarios terminou");
             res.end(JSON.stringify(rows));
@@ -132,9 +132,7 @@ const server = http.createServer(async (req, res) => {
             try {
                 const { login, senha } = JSON.parse(body);
                 const hash = await bcrypt.hash(senha, 10);
-                const conn = await pool.getConnection();
-                await conn.query("INSERT INTO usuarios (login, senha) VALUES (?, ?)", [login, hash]);
-                conn.release();
+                await pool.query("INSERT INTO usuarios (login, senha) VALUES (?, ?)", [login, hash]);
                 res.writeHead(201, { 'Content-Type': 'application/json' });
                 console.log("[API] POST /api/usuarios terminou");
                 res.end(JSON.stringify({ mensagem: 'Usuário criado!' }));
@@ -152,9 +150,7 @@ const server = http.createServer(async (req, res) => {
         console.log("[API] DELETE /api/usuarios iniciou");
         const id = urlParsed.searchParams.get('id');
         try {
-            const conn = await pool.getConnection();
-            await conn.query("DELETE FROM usuarios WHERE id = ?", [id]);
-            conn.release();
+            await pool.query("DELETE FROM usuarios WHERE id = ?", [id]);
             res.writeHead(200, { 'Content-Type': 'application/json' });
             console.log("[API] DELETE /api/usuarios terminou");
             res.end(JSON.stringify({ mensagem: 'Usuário excluído!' }));
@@ -170,15 +166,13 @@ const server = http.createServer(async (req, res) => {
     if (pathName === '/api/fatos' && req.method === 'GET') {
         console.log("[API] GET /api/fatos iniciou");
         try {
-            const conn = await pool.getConnection();
             // JOIN para trazer o nome da conta
-            const rows = await conn.query(`
+            const rows = await pool.query(`
                 SELECT f.*, c.nome as nome_conta 
                 FROM fatos f 
                 LEFT JOIN contas c ON f.conta_id = c.id 
                 ORDER BY f.data DESC
             `);
-            conn.release();
             res.writeHead(200, { 'Content-Type': 'application/json' });
             console.log("[API] GET /api/fatos terminou");
             res.end(JSON.stringify(rows));
@@ -198,12 +192,10 @@ const server = http.createServer(async (req, res) => {
         req.on('end', async () => {
             try {
                 const { conta_id, tipo, historico, data, valor } = JSON.parse(body);
-                const conn = await pool.getConnection();
-                await conn.query(
+                await pool.query(
                     "INSERT INTO fatos (conta_id, tipo, descricao, data, valor) VALUES (?, ?, ?, ?, ?)", 
                     [conta_id, tipo, historico, data, valor]
                 );
-                conn.release();
                 res.writeHead(201, { 'Content-Type': 'application/json' });
                 console.log("[API] POST /api/fatos terminou");
                 res.end(JSON.stringify({ mensagem: 'Fato registrado!' }));
@@ -220,9 +212,7 @@ const server = http.createServer(async (req, res) => {
     if (pathName === '/api/contas' && req.method === 'GET') {
         console.log("[API] GET /api/contas iniciou");
         try {
-            const conn = await pool.getConnection();
-            const rows = await conn.query("SELECT * FROM contas");
-            conn.release();
+            const rows = await pool.query("SELECT * FROM contas");
             res.writeHead(200, { 'Content-Type': 'application/json' });
             console.log("[API] GET /api/contas terminou");
             res.end(JSON.stringify(rows));
@@ -242,12 +232,10 @@ const server = http.createServer(async (req, res) => {
         req.on('end', async () => {
             try {
                 const { nome, tipo, codigo, saldo_inicial, descricao, cor } = JSON.parse(body);
-                const conn = await pool.getConnection();
-                await conn.query(
+                await pool.query(
                     "INSERT INTO contas (nome, tipo, codigo, saldo_inicial, descricao, cor) VALUES (?, ?, ?, ?, ?, ?)", 
                     [nome, tipo, codigo, saldo_inicial, descricao, cor]
                 );
-                conn.release();
                 res.writeHead(201, { 'Content-Type': 'application/json' });
                 console.log("[API] POST /api/contas terminou");
                 res.end(JSON.stringify({ mensagem: 'Conta cadastrada!' }));
@@ -264,9 +252,7 @@ const server = http.createServer(async (req, res) => {
     if (pathName === '/api/funcionarios' && req.method === 'GET') {
         console.log("[API] GET /api/funcionarios iniciou");
         try {
-            const conn = await pool.getConnection();
-            const rows = await conn.query("SELECT * FROM funcionarios");
-            conn.release();
+            const rows = await pool.query("SELECT * FROM funcionarios");
             res.writeHead(200, { 'Content-Type': 'application/json' });
             console.log("[API] GET /api/funcionarios terminou");
             res.end(JSON.stringify(rows));
@@ -286,9 +272,7 @@ const server = http.createServer(async (req, res) => {
         req.on('end', async () => {
             try {
                 const { nome, cpf, data, conta, salario } = JSON.parse(body);
-                const conn = await pool.getConnection();
-                await conn.query("INSERT INTO funcionarios (nome, cpf, data_ingresso, conta, salario) VALUES (?, ?, ?, ?, ?)", [nome, cpf, data, conta, salario]);
-                conn.release();
+                await pool.query("INSERT INTO funcionarios (nome, cpf, data_ingresso, conta, salario) VALUES (?, ?, ?, ?, ?)", [nome, cpf, data, conta, salario]);
                 res.writeHead(201, { 'Content-Type': 'application/json' });
                 console.log("[API] POST /api/funcionarios terminou");
                 res.end(JSON.stringify({ mensagem: 'Funcionário cadastrado!' }));
@@ -306,9 +290,7 @@ const server = http.createServer(async (req, res) => {
         console.log("[API] DELETE /api/funcionarios iniciou");
         try {
             const id = pathName.split('/').pop();
-            const conn = await pool.getConnection();
-            await conn.query("DELETE FROM funcionarios WHERE id = ?", [id]);
-            conn.release();
+            await pool.query("DELETE FROM funcionarios WHERE id = ?", [id]);
             res.writeHead(200, { 'Content-Type': 'application/json' });
             console.log("[API] DELETE /api/funcionarios terminou");
             res.end(JSON.stringify({ mensagem: 'Funcionário removido!' }));
@@ -329,12 +311,10 @@ const server = http.createServer(async (req, res) => {
         req.on('end', async () => {
             try {
                 const { nome, tipo, codigo, saldo_inicial, descricao, cor } = JSON.parse(body);
-                const conn = await pool.getConnection();
-                await conn.query(
+                await pool.query(
                     "UPDATE contas SET nome=?, tipo=?, codigo=?, saldo_inicial=?, descricao=?, cor=? WHERE id=?", 
                     [nome, tipo, codigo, saldo_inicial, descricao, cor, id]
                 );
-                conn.release();
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 console.log("[API] PUT /api/contas terminou");
                 res.end(JSON.stringify({ mensagem: 'Conta atualizada!' }));
@@ -352,9 +332,7 @@ const server = http.createServer(async (req, res) => {
         console.log("[API] DELETE /api/contas iniciou");
         try {
             const id = pathName.split('/').pop();
-            const conn = await pool.getConnection();
-            await conn.query("DELETE FROM contas WHERE id = ?", [id]);
-            conn.release();
+            await pool.query("DELETE FROM contas WHERE id = ?", [id]);
             res.writeHead(200, { 'Content-Type': 'application/json' });
             console.log("[API] DELETE /api/contas terminou");
             res.end(JSON.stringify({ mensagem: 'Conta removida!' }));
@@ -372,9 +350,10 @@ const server = http.createServer(async (req, res) => {
         let body = '';
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', async () => {
+            let conn;
             try {
                 const { funcionario_id, nome, salario_base, proventos, descontos, liquido, conta_id } = JSON.parse(body);
-                const conn = await pool.getConnection();
+                conn = await pool.getConnection();
                 
                 // 1. Gravar Fato Contábil (Saída) vinculado à conta escolhida
                 const resFato = await conn.query(
@@ -389,7 +368,6 @@ const server = http.createServer(async (req, res) => {
                     [funcionario_id, nome, salario_base, proventos, descontos, liquido, conta_id, fato_id]
                 );
 
-                conn.release();
                 res.writeHead(201, { 'Content-Type': 'application/json' });
                 console.log("[API] POST /api/folhas terminou");
                 res.end(JSON.stringify({ mensagem: 'Folha gravada e integrada com sucesso!' }));
@@ -397,6 +375,8 @@ const server = http.createServer(async (req, res) => {
                 console.error("[API] ERRO /api/folhas:", err);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ error: err.message }));
+            } finally {
+                if (conn) conn.release();
             }
         });
         return;
@@ -413,9 +393,7 @@ const server = http.createServer(async (req, res) => {
             try {
                 const { login, senha } = JSON.parse(body);
 
-                const conn = await pool.getConnection();
-                const rows = await conn.query("SELECT * FROM usuarios WHERE login = ?", [login]);
-                conn.release();
+                const rows = await pool.query("SELECT * FROM usuarios WHERE login = ?", [login]);
 
                 if (rows.length > 0) {
                     const usuario = rows[0];
@@ -531,12 +509,14 @@ res.end(JSON.stringify({ error: 'Rota da API não encontrada' }));
 const PORT = 3000;
 server.listen(PORT, async () => {
     console.log(`Servidor raiz rodando na porta ${PORT}`);
+    let conn;
     try {
         console.log("Tentando conectar ao banco de dados em:", process.env.DB_HOST || 'localhost');
-        const conn = await pool.getConnection();
+        conn = await pool.getConnection();
         console.log("✅ Conexão com o Banco de Dados estabelecida com sucesso!");
-        conn.release();
     } catch (err) {
         console.error("❌ ERRO ao conectar no Banco de Dados:", err.message);
+    } finally {
+        if (conn) conn.release();
     }
 });
