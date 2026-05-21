@@ -90,12 +90,15 @@ const server = http.createServer(async (req, res) => {
 
     // Rota de teste
     if (pathName === '/api/health' && req.method === 'GET') {
+        console.log("[API] GET /api/health iniciou");
         try {
             const conn = await pool.getConnection();
             conn.release();
             res.writeHead(200, { 'Content-Type': 'application/json' });
+            console.log("[API] GET /api/health terminou");
             res.end(JSON.stringify({ status: 'API Node.js pura rodando e conectada ao banco MariaDB!' }));
         } catch (err) {
+            console.error("[API] ERRO /api/health:", err);
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: 'Erro ao conectar ao banco de dados', detalhe: err.message }));
         }
@@ -104,13 +107,16 @@ const server = http.createServer(async (req, res) => {
 
     // Listar Usuários
     if (pathName === '/api/usuarios' && req.method === 'GET') {
+        console.log("[API] GET /api/usuarios iniciou");
         try {
             const conn = await pool.getConnection();
             const rows = await conn.query("SELECT id, login FROM usuarios");
             conn.release();
             res.writeHead(200, { 'Content-Type': 'application/json' });
+            console.log("[API] GET /api/usuarios terminou");
             res.end(JSON.stringify(rows));
         } catch (err) {
+            console.error("[API] ERRO /api/usuarios:", err);
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: err.message }));
         }
@@ -119,6 +125,7 @@ const server = http.createServer(async (req, res) => {
 
     // Criar Usuário
     if (pathName === '/api/usuarios' && req.method === 'POST') {
+        console.log("[API] POST /api/usuarios iniciou");
         let body = '';
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', async () => {
@@ -129,8 +136,10 @@ const server = http.createServer(async (req, res) => {
                 await conn.query("INSERT INTO usuarios (login, senha) VALUES (?, ?)", [login, hash]);
                 conn.release();
                 res.writeHead(201, { 'Content-Type': 'application/json' });
+                console.log("[API] POST /api/usuarios terminou");
                 res.end(JSON.stringify({ mensagem: 'Usuário criado!' }));
             } catch (err) {
+                console.error("[API] ERRO /api/usuarios:", err);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ error: err.message }));
             }
@@ -140,14 +149,17 @@ const server = http.createServer(async (req, res) => {
 
     // Excluir Usuário
     if (pathName.startsWith('/api/usuarios') && req.method === 'DELETE') {
+        console.log("[API] DELETE /api/usuarios iniciou");
         const id = urlParsed.searchParams.get('id');
         try {
             const conn = await pool.getConnection();
             await conn.query("DELETE FROM usuarios WHERE id = ?", [id]);
             conn.release();
             res.writeHead(200, { 'Content-Type': 'application/json' });
+            console.log("[API] DELETE /api/usuarios terminou");
             res.end(JSON.stringify({ mensagem: 'Usuário excluído!' }));
         } catch (err) {
+            console.error("[API] ERRO /api/usuarios:", err);
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: err.message }));
         }
@@ -156,6 +168,7 @@ const server = http.createServer(async (req, res) => {
 
     // Listar Fatos
     if (pathName === '/api/fatos' && req.method === 'GET') {
+        console.log("[API] GET /api/fatos iniciou");
         try {
             const conn = await pool.getConnection();
             // JOIN para trazer o nome da conta
@@ -167,8 +180,10 @@ const server = http.createServer(async (req, res) => {
             `);
             conn.release();
             res.writeHead(200, { 'Content-Type': 'application/json' });
+            console.log("[API] GET /api/fatos terminou");
             res.end(JSON.stringify(rows));
         } catch (err) {
+            console.error("[API] ERRO /api/fatos:", err);
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: err.message }));
         }
@@ -177,6 +192,7 @@ const server = http.createServer(async (req, res) => {
 
     // Criar Fato
     if (pathName === '/api/fatos' && req.method === 'POST') {
+        console.log("[API] POST /api/fatos iniciou");
         let body = '';
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', async () => {
@@ -189,8 +205,10 @@ const server = http.createServer(async (req, res) => {
                 );
                 conn.release();
                 res.writeHead(201, { 'Content-Type': 'application/json' });
+                console.log("[API] POST /api/fatos terminou");
                 res.end(JSON.stringify({ mensagem: 'Fato registrado!' }));
             } catch (err) {
+                console.error("[API] ERRO /api/fatos:", err);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ error: err.message }));
             }
@@ -200,13 +218,16 @@ const server = http.createServer(async (req, res) => {
 
     // Listar Contas
     if (pathName === '/api/contas' && req.method === 'GET') {
+        console.log("[API] GET /api/contas iniciou");
         try {
             const conn = await pool.getConnection();
             const rows = await conn.query("SELECT * FROM contas");
             conn.release();
             res.writeHead(200, { 'Content-Type': 'application/json' });
+            console.log("[API] GET /api/contas terminou");
             res.end(JSON.stringify(rows));
         } catch (err) {
+            console.error("[API] ERRO /api/contas:", err);
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: err.message }));
         }
@@ -215,6 +236,7 @@ const server = http.createServer(async (req, res) => {
 
     // Criar Conta
     if (pathName === '/api/contas' && req.method === 'POST') {
+        console.log("[API] POST /api/contas iniciou");
         let body = '';
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', async () => {
@@ -227,8 +249,10 @@ const server = http.createServer(async (req, res) => {
                 );
                 conn.release();
                 res.writeHead(201, { 'Content-Type': 'application/json' });
+                console.log("[API] POST /api/contas terminou");
                 res.end(JSON.stringify({ mensagem: 'Conta cadastrada!' }));
             } catch (err) {
+                console.error("[API] ERRO /api/contas:", err);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ error: err.message }));
             }
@@ -238,13 +262,16 @@ const server = http.createServer(async (req, res) => {
 
     // Listar Funcionários
     if (pathName === '/api/funcionarios' && req.method === 'GET') {
+        console.log("[API] GET /api/funcionarios iniciou");
         try {
             const conn = await pool.getConnection();
             const rows = await conn.query("SELECT * FROM funcionarios");
             conn.release();
             res.writeHead(200, { 'Content-Type': 'application/json' });
+            console.log("[API] GET /api/funcionarios terminou");
             res.end(JSON.stringify(rows));
         } catch (err) {
+            console.error("[API] ERRO /api/funcionarios:", err);
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: err.message }));
         }
@@ -253,6 +280,7 @@ const server = http.createServer(async (req, res) => {
 
     // Criar Funcionário
     if (pathName === '/api/funcionarios' && req.method === 'POST') {
+        console.log("[API] POST /api/funcionarios iniciou");
         let body = '';
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', async () => {
@@ -262,8 +290,10 @@ const server = http.createServer(async (req, res) => {
                 await conn.query("INSERT INTO funcionarios (nome, cpf, data_ingresso, conta, salario) VALUES (?, ?, ?, ?, ?)", [nome, cpf, data, conta, salario]);
                 conn.release();
                 res.writeHead(201, { 'Content-Type': 'application/json' });
+                console.log("[API] POST /api/funcionarios terminou");
                 res.end(JSON.stringify({ mensagem: 'Funcionário cadastrado!' }));
             } catch (err) {
+                console.error("[API] ERRO /api/funcionarios:", err);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ error: err.message }));
             }
@@ -273,14 +303,17 @@ const server = http.createServer(async (req, res) => {
 
     // Excluir Funcionário
     if (pathName.startsWith('/api/funcionarios/') && req.method === 'DELETE') {
+        console.log("[API] DELETE /api/funcionarios iniciou");
         try {
             const id = pathName.split('/').pop();
             const conn = await pool.getConnection();
             await conn.query("DELETE FROM funcionarios WHERE id = ?", [id]);
             conn.release();
             res.writeHead(200, { 'Content-Type': 'application/json' });
+            console.log("[API] DELETE /api/funcionarios terminou");
             res.end(JSON.stringify({ mensagem: 'Funcionário removido!' }));
         } catch (err) {
+            console.error("[API] ERRO /api/funcionarios:", err);
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: err.message }));
         }
@@ -289,6 +322,7 @@ const server = http.createServer(async (req, res) => {
 
     // Editar Conta
     if (pathName.startsWith('/api/contas/') && req.method === 'PUT') {
+        console.log("[API] PUT /api/contas iniciou");
         const id = pathName.split('/').pop();
         let body = '';
         req.on('data', chunk => { body += chunk.toString(); });
@@ -302,8 +336,10 @@ const server = http.createServer(async (req, res) => {
                 );
                 conn.release();
                 res.writeHead(200, { 'Content-Type': 'application/json' });
+                console.log("[API] PUT /api/contas terminou");
                 res.end(JSON.stringify({ mensagem: 'Conta atualizada!' }));
             } catch (err) {
+                console.error("[API] ERRO /api/contas:", err);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ error: err.message }));
             }
@@ -313,14 +349,17 @@ const server = http.createServer(async (req, res) => {
 
     // Excluir Conta
     if (pathName.startsWith('/api/contas/') && req.method === 'DELETE') {
+        console.log("[API] DELETE /api/contas iniciou");
         try {
             const id = pathName.split('/').pop();
             const conn = await pool.getConnection();
             await conn.query("DELETE FROM contas WHERE id = ?", [id]);
             conn.release();
             res.writeHead(200, { 'Content-Type': 'application/json' });
+            console.log("[API] DELETE /api/contas terminou");
             res.end(JSON.stringify({ mensagem: 'Conta removida!' }));
         } catch (err) {
+            console.error("[API] ERRO /api/contas:", err);
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: "Erro ao excluir: " + err.message }));
         }
@@ -329,6 +368,7 @@ const server = http.createServer(async (req, res) => {
 
     // Gravar Folha de Pagamento
     if (pathName === '/api/folhas' && req.method === 'POST') {
+        console.log("[API] POST /api/folhas iniciou");
         let body = '';
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', async () => {
@@ -351,8 +391,10 @@ const server = http.createServer(async (req, res) => {
 
                 conn.release();
                 res.writeHead(201, { 'Content-Type': 'application/json' });
+                console.log("[API] POST /api/folhas terminou");
                 res.end(JSON.stringify({ mensagem: 'Folha gravada e integrada com sucesso!' }));
             } catch (err) {
+                console.error("[API] ERRO /api/folhas:", err);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ error: err.message }));
             }
@@ -362,6 +404,7 @@ const server = http.createServer(async (req, res) => {
 
     // Rota de Login
     if (pathName === '/api/login' && req.method === 'POST') {
+        console.log("[API] POST /api/login iniciou");
         let body = '';
         req.on('data', chunk => {
             body += chunk.toString();
@@ -384,6 +427,7 @@ const server = http.createServer(async (req, res) => {
                             'Content-Type': 'application/json',
                             'Set-Cookie': `jungle_session=${token}; Path=/; SameSite=Lax; Max-Age=86400`
                         });
+                        console.log("[API] POST /api/login terminou");
                         res.end(JSON.stringify({ mensagem: 'Login aprovado!' }));
                     } else {
                         res.writeHead(401, { 'Content-Type': 'application/json' });
@@ -394,6 +438,7 @@ const server = http.createServer(async (req, res) => {
                     res.end(JSON.stringify({ error: 'Login ou senha incorretos' }));
                 }
             } catch (err) {
+                console.error("[API] ERRO /api/login:", err);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ error: 'Erro no servidor', detalhe: err.message }));
             }
@@ -403,10 +448,12 @@ const server = http.createServer(async (req, res) => {
 
     // Rota de Logout
     if (pathName === '/api/logout') {
+        console.log("[API] GET /api/logout iniciou");
         res.writeHead(200, {
             'Content-Type': 'application/json',
             'Set-Cookie': 'jungle_session=; Path=/; SameSite=Lax; Max-Age=0'
         });
+        console.log("[API] GET /api/logout terminou");
         res.end(JSON.stringify({ mensagem: 'Logout realizado!' }));
         return;
     }
