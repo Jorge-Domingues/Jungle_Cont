@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>DRE — Jungle Cont</title>
+    <meta name="description" content="Demonstração do Resultado do Exercício">
+    <link rel="stylesheet" href="/css/dre.css">
+    <link rel="stylesheet" href="/css/icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+    <div id="sidebar-container"></div>
+    <script src="/js/sidebar.js"></script>
+
+    <main class="main">
+        <div class="top">
+            <h1><i class="fa-solid fa-chart-line"></i> Demonstração do Resultado do Exercício</h1>
+            <p class="subtitle">Receitas − Despesas = Resultado Líquido do Período</p>
+        </div>
+
+        <div class="filtro-bar">
+            <div>
+                <label>De</label>
+                <input type="date" id="filtroInicio">
+            </div>
+            <div>
+                <label>Até</label>
+                <input type="date" id="filtroFim">
+            </div>
+            <button class="btn-filtrar" onclick="carregarDRE()">
+                <i class="fa-solid fa-filter"></i> Filtrar
+            </button>
+        </div>
+
+        <div class="dre-container" id="dreContainer">
+            <div class="empty-state">
+                <i class="fa-solid fa-chart-line"></i>
+                <p>Carregando DRE...</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/dre.js"></script>
+</body>
+</html>

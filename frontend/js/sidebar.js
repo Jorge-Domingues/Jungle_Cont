@@ -39,10 +39,12 @@ async function carregarSidebar() {
         const links = {
             '/home.html': 'link-home',
             '/cadastros.html': 'link-cadastros',
-            '/fatos.html': 'link-fatos',
+            '/lancamentos.html': 'link-lancamentos',
             '/diario.html': 'link-diario',
             '/razao.html': 'link-razao',
             '/balancete.html': 'link-balancete',
+            '/dre.html': 'link-dre',
+            '/balanco.html': 'link-balanco',
             '/folha.html': 'link-folha',
             '/usuarios.html': 'link-usuarios'
         };
@@ -59,7 +61,7 @@ async function carregarSidebar() {
             logoutBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
                 try {
-                    await fetch('/api/logout', { method: 'POST' });
+                    await fetch('/api/logout', { method: 'POST', credentials: 'include' });
                 } catch (err) {
                     console.error("Erro ao realizar logout:", err);
                 }

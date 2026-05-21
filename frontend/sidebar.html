@@ -21,6 +21,15 @@
         margin-bottom: 30px;
         font-weight: 500;
         opacity: 0.95;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .sidebar h2 img {
+        width: 36px;
+        height: 36px;
+        object-fit: contain;
     }
 
     .sidebar nav {
@@ -71,6 +80,21 @@
         border-radius: 0 4px 4px 0;
     }
 
+    .sidebar .separator {
+        height: 1px;
+        background: rgba(255,255,255,0.1);
+        margin: 8px 0;
+    }
+
+    .sidebar .section-label {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: rgba(255,255,255,0.4);
+        padding: 4px 14px;
+        margin-top: 4px;
+    }
+
     .logout-link {
         margin-top: auto !important;
         color: #ff6b6b !important;
@@ -87,16 +111,31 @@
         .main { margin-left: 0 !important; }
     }
 </style>
+<link rel="stylesheet" href="/css/icons.css">
 
 <aside class="sidebar">
-    <h2>🌿 Jungle Cont</h2>
+    <h2><img src="/img/logo.png" alt="Jungle Cont"> Jungle Cont</h2>
     <nav>
         <a href="/home.html" id="link-home"><i class="fa-solid fa-house"></i> Home</a>
         <a href="/cadastros.html" id="link-cadastros"><i class="fa-solid fa-folder"></i> Cadastros</a>
-        <a href="/fatos.html" id="link-fatos"><i class="fa-solid fa-file"></i> Fatos</a>
+
+        <div class="separator"></div>
+        <div class="section-label">Escrituração</div>
+
+        <a href="/lancamentos.html" id="link-lancamentos"><i class="fa-solid fa-right-left"></i> Lançamentos</a>
         <a href="/diario.html" id="link-diario"><i class="fa-solid fa-book"></i> Diário</a>
         <a href="/razao.html" id="link-razao"><i class="fa-solid fa-chart-column"></i> Razão</a>
+
+        <div class="separator"></div>
+        <div class="section-label">Demonstrações</div>
+
         <a href="/balancete.html" id="link-balancete"><i class="fa-solid fa-scale-balanced"></i> Balancete</a>
+        <a href="/dre.html" id="link-dre"><i class="fa-solid fa-chart-line"></i> DRE</a>
+        <a href="/balanco.html" id="link-balanco"><i class="fa-solid fa-chart-pie"></i> Balanço</a>
+
+        <div class="separator"></div>
+        <div class="section-label">Pessoal</div>
+
         <a href="/folha.html" id="link-folha"><i class="fa-solid fa-calculator"></i> Folha</a>
         <a href="/usuarios.html" id="link-usuarios"><i class="fa-solid fa-users-gear"></i> Usuários</a>
         <a href="#" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>

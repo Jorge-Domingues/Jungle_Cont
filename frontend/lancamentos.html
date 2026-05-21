@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lançamentos Contábeis — Jungle Cont</title>
+    <meta name="description" content="Registro de lançamentos contábeis com partidas dobradas">
+    <link rel="stylesheet" href="/css/lancamentos.css">
+    <link rel="stylesheet" href="/css/icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+    <script src="/js/sidebar.js"></script>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOPO -->
+        <div class="top">
+            <h1><i class="fa-solid fa-right-left"></i> Lançamentos Contábeis</h1>
+            <p class="subtitle">Partidas Dobradas — cada lançamento deve ter Σ Débitos = Σ Créditos</p>
+        </div>
+
+        <!-- FORMULÁRIO DE LANÇAMENTO -->
+        <div class="form-card">
+            <h2>Novo Lançamento</h2>
+
+            <div class="form-header">
+                <div>
+                    <label>DATA</label>
+                    <input type="date" id="lancData">
+                </div>
+                <div class="flex-grow">
+                    <label>HISTÓRICO</label>
+                    <input type="text" id="lancDescricao" placeholder="Descrição do fato contábil...">
+                </div>
+            </div>
+
+            <!-- PARTIDAS DINÂMICAS -->
+            <div class="partidas-header">
+                <span class="col-conta">Conta</span>
+                <span class="col-tipo">D/C</span>
+                <span class="col-valor">Valor</span>
+                <span class="col-acao"></span>
+            </div>
+
+            <div id="partidasContainer">
+                <!-- Linhas dinâmicas inseridas pelo JS -->
+            </div>
+
+            <button class="btn-add-partida" onclick="adicionarPartida()">
+                <i class="fa-solid fa-plus"></i> Adicionar Partida
+            </button>
+
+            <!-- INDICADOR DE EQUILÍBRIO -->
+            <div class="equilibrio-bar" id="equilibrioBar">
+                <div class="eq-item">
+                    <span class="eq-label">Débitos</span>
+                    <span class="eq-value debito" id="totalDebitos">R$ 0,00</span>
+                </div>
+                <div class="eq-separator">
+                    <span id="equilibrioIcon" class="icon-svg icon-clock eq-icon pendente"></span>
+                </div>
+                <div class="eq-item">
+                    <span class="eq-label">Créditos</span>
+                    <span class="eq-value credito" id="totalCreditos">R$ 0,00</span>
+                </div>
+            </div>
+
+            <button class="btn-primary" id="btnRegistrar" onclick="registrarLancamento()" disabled>
+                <i class="fa-solid fa-check"></i> Registrar Lançamento
+            </button>
+        </div>
+
+        <!-- TABELA DE LANÇAMENTOS RECENTES -->
+        <div class="table-card">
+            <h2>Lançamentos Recentes</h2>
+            <div id="listaLancamentos">
+                <!-- Preenchido pelo JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- MODAL -->
+    <div id="modal" class="modal">
+        <div class="modal-box">
+            <span id="modalIcon"></span>
+            <p id="modalTexto"></p>
+            <button onclick="fecharModal()">OK</button>
+        </div>
+    </div>
+
+    <script src="/js/lancamentos.js"></script>
+
+</body>
+</html>

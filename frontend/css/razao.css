@@ -1,191 +1,113 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
+/* ============================================================
+   RAZAO.CSS — Livro Razão
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #f1f5f9; color: #1e293b; min-height: 100vh;
 }
 
-body{
-    display:flex;
-    background:#f4f4f4;
-    overflow: hidden;
+.main { padding: 30px 40px; }
+.top { margin-bottom: 25px; }
+.top h1 { font-size: 26px; font-weight: 700; color: #0f3d1e; display: flex; align-items: center; gap: 12px; }
+.top .subtitle { color: #64748b; font-size: 13px; margin-top: 4px; }
+
+.filtro-bar {
+    display: flex; gap: 12px; align-items: flex-end;
+    margin-bottom: 25px; background: white;
+    padding: 18px 24px; border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
 }
 
-/* SIDEBAR */
-.sidebar{
-    width:250px;
-    height:100vh;
-    background:linear-gradient(180deg,#0f3d1e,#2c8b4b);
-    color:white;
-    padding:20px;
-    display:flex;
-    flex-direction:column;
-    justify-content: center;
+.filtro-bar label {
+    font-size: 10px; font-weight: 600; color: #64748b;
+    text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;
 }
 
-/* LOGO */
-.sidebar h2{
-    font-size:22px;
-    margin-bottom:30px;
-    font-weight:500;
-    opacity:0.95;
+.filtro-bar select, .filtro-bar input {
+    padding: 9px 14px; border: 1.5px solid #e2e8f0;
+    border-radius: 10px; font-size: 13px; font-family: 'Inter', sans-serif;
+    background: #f8fafc;
 }
 
-/* MENU */
-.sidebar nav{
-    flex: 1;
-    display:flex;
-    flex-direction:column;
-    gap:6px;
+.filtro-bar select { min-width: 300px; }
+.filtro-bar select:focus, .filtro-bar input:focus { outline: none; border-color: #2c8b4b; background: white; }
+
+.btn-filtrar {
+    padding: 9px 18px; border: none; border-radius: 10px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif; display: flex;
+    align-items: center; gap: 6px; transition: all 0.2s;
+    background: linear-gradient(135deg, #0f3d1e, #2c8b4b); color: white;
+}
+.btn-filtrar:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(44,139,75,0.3); }
+
+/* RAZÃO CARD */
+.razao-card {
+    background: white; border-radius: 16px; padding: 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
 }
 
-.logout-link {
-    margin-top: auto !important;
-    color: #ff6b6b !important;
-    font-weight: 500;
+.razao-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px solid #f1f5f9;
 }
 
-.logout-link:hover {
-    background: rgba(255, 107, 107, 0.1) !important;
+.razao-title { display: flex; align-items: center; gap: 12px; }
+
+.razao-codigo {
+    font-size: 12px; font-weight: 700; color: #64748b;
+    background: #f1f5f9; padding: 4px 10px; border-radius: 6px;
 }
 
-/* LINKS */
-.sidebar a{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:10px 14px;
-    border-radius:10px;
-    text-decoration:none;
-    color:rgba(255,255,255,0.85);
-    font-size:14px;
-    transition:all 0.2s ease;
+.razao-title h2 { font-size: 20px; color: #1e293b; }
+
+.razao-meta { display: flex; gap: 8px; align-items: center; }
+
+.razao-tipo {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; color: white;
 }
 
-/* ÍCONES */
-.sidebar a i{
-    width:18px;
-    text-align:center;
-    opacity:0.8;
+.razao-natureza {
+    font-size: 11px; font-weight: 600; color: #64748b;
+    padding: 4px 10px; border-radius: 6px; border: 1px solid #e2e8f0;
 }
 
-/* HOVER (leve, sem exagero) */
-.sidebar a:hover{
-    background:rgba(255,255,255,0.08);
-    color:white;
+/* TABLE */
+.razao-table {
+    width: 100%; border-collapse: collapse;
 }
 
-/* ATIVO (bem mais suave) */
-.sidebar .active{
-    background:rgba(255,255,255,0.12);
-    color:white;
-    font-weight:500;
+.razao-table th {
+    padding: 12px 14px; text-align: left; font-size: 11px;
+    font-weight: 600; color: #64748b; text-transform: uppercase;
+    letter-spacing: 0.5px; background: #f8fafc;
+    border-bottom: 2px solid #e2e8f0;
 }
 
-/* EFEITO SUTIL LATERAL */
-.sidebar .active::before{
-    content:"";
-    position:absolute;
-    left:0;
-    width:3px;
-    height:24px;
-    background:#ffb347;
-    border-radius:0 4px 4px 0;
+.razao-table td {
+    padding: 10px 14px; font-size: 13px;
+    border-bottom: 1px solid #f1f5f9;
 }
 
-/* POSITION FIX */
-.sidebar a{
-    position:relative;
+.saldo-inicial-row { background: #fffcf5; }
+
+.valor-debito { color: #16a34a; font-variant-numeric: tabular-nums; }
+.valor-credito { color: #dc2626; font-variant-numeric: tabular-nums; }
+.saldo-cell { font-variant-numeric: tabular-nums; }
+
+.total-row {
+    background: #f8fafc; border-top: 2px solid #e2e8f0;
 }
 
-/* MAIN */
-.main{
-    flex:1;
-    padding:25px;
-    overflow-y:auto;
+/* EMPTY STATE */
+.empty-state {
+    text-align: center; padding: 50px 20px; color: #94a3b8;
+    background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);
 }
-
-/* TOPO */
-.top{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:20px;
-}
-
-.btn{
-    background:linear-gradient(90deg,#ff7a00,#ffb347);
-    border:none;
-    padding:10px 20px;
-    border-radius:10px;
-    color:white;
-    cursor:pointer;
-}
-
-/* ===== RAZÃO ===== */
-
-/* CONTAINER */
-.razao-container{
-    background:white;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.08);
-}
-
-/* TÍTULO */
-.razao-container h2{
-    margin-bottom:20px;
-    color:#0f3d1e;
-    font-weight:600;
-}
-
-/* TABELA */
-.tabela{
-    width:100%;
-}
-
-/* HEADER */
-.header{
-    display:grid;
-    grid-template-columns:120px 1fr 150px 150px 150px;
-    font-size:12px;
-    color:#2c8b4b;
-    font-weight:bold;
-    padding-bottom:10px;
-    border-bottom:2px solid #2c8b4b;
-}
-
-/* LINHAS */
-.linha{
-    display:grid;
-    grid-template-columns:120px 1fr 150px 150px 150px;
-    padding:12px 0;
-    border-bottom:1px solid #eee;
-    font-size:14px;
-    color:#333;
-}
-
-/* hover leve igual sistema */
-.linha:hover{
-    background:rgba(44,139,75,0.05);
-}
-
-/* alinhamento números */
-.linha span:nth-child(3),
-.linha span:nth-child(4),
-.linha span:nth-child(5),
-.header span:nth-child(3),
-.header span:nth-child(4),
-.header span:nth-child(5){
-    text-align:right;
-}
-
-/* SALDO */
-.saldo{
-    font-weight:bold;
-    color:#2c8b4b;
-}
-
-.negativo{
-    color:red;
-    font-weight:bold;
-}
+.empty-state i { font-size: 48px; margin-bottom: 12px; opacity: 0.5; display: block; }
+.empty-state p { font-size: 14px; }

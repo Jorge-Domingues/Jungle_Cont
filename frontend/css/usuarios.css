@@ -8,13 +8,14 @@
 body {
     display: flex;
     background: #f4f4f4;
-    min-height: 100vh;
+    overflow: hidden;
 }
 
 /* MAIN */
 .main {
     flex: 1;
     padding: 25px;
+    overflow-y: auto;
 }
 
 /* TOPO */
@@ -37,57 +38,23 @@ body {
     color: #ff7a00;
 }
 
-/* TABS */
-.tabs {
-    display: flex;
-    gap: 0;
-    margin-bottom: 25px;
-    background: white;
-    padding: 6px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    width: fit-content;
-}
-
-.tab {
-    cursor: pointer;
-    padding: 10px 24px;
-    border: none;
-    background: transparent;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: #666;
-    transition: all 0.25s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.tab:hover {
-    background: #fff7ed;
-    color: #ff7a00;
-}
-
-.tab.active {
-    background: linear-gradient(90deg, #ff7a00, #ffb347);
-    color: white;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(255, 122, 0, 0.35);
+/* LAYOUT */
+.usuarios-layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 25px;
+    align-items: start;
 }
 
 /* CARDS */
-.form-card,
-.list-card {
+.usuarios-card {
     background: white;
     padding: 28px;
     border-radius: 14px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.07);
-    margin-bottom: 25px;
 }
 
-.form-card h2,
-.list-card h2 {
+.usuarios-card h2 {
     font-size: 1.15rem;
     color: #333;
     margin-bottom: 20px;
@@ -95,32 +62,24 @@ body {
     border-bottom: 2px solid #f0f0f0;
 }
 
-/* FORM GRID */
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 18px;
-    margin-bottom: 20px;
-}
-
-.form-grid > div {
+/* FORM */
+.usuarios-form {
     display: flex;
     flex-direction: column;
+    gap: 14px;
 }
 
-.form-grid label {
+.usuarios-form label {
     font-size: 0.75rem;
     font-weight: 600;
     color: #777;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 6px;
 }
 
-input,
-select {
+.usuarios-form input {
     width: 100%;
-    padding: 11px 14px;
+    padding: 12px 14px;
     border-radius: 10px;
     border: 1.5px solid #e0e0e0;
     font-size: 0.95rem;
@@ -130,41 +89,17 @@ select {
     outline: none;
 }
 
-input:focus,
-select:focus {
+.usuarios-form input:focus {
     border-color: #ff7a00;
     background: #fff;
     box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
 }
 
-input::placeholder {
+.usuarios-form input::placeholder {
     color: #bbb;
 }
 
-/* FORM TRANSITION */
-.form {
-    opacity: 0;
-    transform: translateX(20px);
-    position: absolute;
-    width: 100%;
-    transition: all 0.35s ease;
-    pointer-events: none;
-}
-
-.form.ativo {
-    opacity: 1;
-    transform: translateX(0);
-    position: relative;
-    pointer-events: all;
-}
-
-/* BOTÕES */
-.btn-group {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
+/* BOTÃO */
 .btn-primary {
     background: linear-gradient(90deg, #ff7a00, #ffb347);
     border: none;
@@ -176,6 +111,8 @@ input::placeholder {
     cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: 0 4px 14px rgba(255, 122, 0, 0.3);
+    width: 100%;
+    margin-top: 6px;
 }
 
 .btn-primary:hover {
@@ -184,39 +121,41 @@ input::placeholder {
     box-shadow: 0 6px 18px rgba(255, 122, 0, 0.4);
 }
 
-.btn-secondary {
-    background: #f0f0f0;
-    border: none;
-    padding: 12px 28px;
-    border-radius: 10px;
-    color: #555;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
+/* TABELA */
+.usuarios-card table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
-.btn-secondary:hover {
-    background: #e0e0e0;
-    transform: translateY(-2px);
+.usuarios-card thead {
+    background: #fafafa;
 }
 
-.btn-cancel {
-    background: #fee2e2;
-    color: #dc2626;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s ease;
+.usuarios-card th {
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #eee;
 }
 
-.btn-cancel:hover {
-    background: #fecaca;
+.usuarios-card td {
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 0.9rem;
+    color: #444;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-/* BOTÃO EXCLUIR ESTILIZADO */
+.usuarios-card tbody tr:hover {
+    background: #fffaf5;
+}
+
+/* BOTÃO EXCLUIR */
 .btn-delete {
     background: #fff;
     color: #dc2626;
@@ -238,40 +177,6 @@ input::placeholder {
 .btn-delete:hover {
     background: #dc2626;
     color: white;
-}
-
-/* TABELA */
-.list-card table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-}
-
-.list-card thead {
-    background: #fafafa;
-}
-
-.list-card th {
-    padding: 14px 16px;
-    text-align: left;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #888;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid #eee;
-}
-
-.list-card td {
-    padding: 14px 16px;
-    text-align: left;
-    font-size: 0.9rem;
-    color: #444;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.list-card tbody tr:hover {
-    background: #fffaf5;
 }
 
 /* MODAL */
@@ -320,12 +225,6 @@ input::placeholder {
     line-height: 1.5;
 }
 
-.modal-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-}
-
 .modal-box button {
     background: linear-gradient(90deg, #ff7a00, #ffb347);
     border: none;
@@ -350,10 +249,6 @@ input::placeholder {
     color: #dc2626;
 }
 
-.atencao span {
-    color: #f59e0b;
-}
-
 @keyframes scaleIn {
     from {
         transform: scale(0.85);
@@ -375,31 +270,15 @@ input::placeholder {
         font-size: 1.4rem;
     }
 
-    .tab {
-        padding: 8px 16px;
-        font-size: 0.85rem;
-    }
-
-    .form-card,
-    .list-card {
-        padding: 20px;
-    }
-
-    .form-grid {
+    .usuarios-layout {
         grid-template-columns: 1fr;
     }
 
-    .btn-group {
-        flex-direction: column;
+    .usuarios-card {
+        padding: 20px;
     }
 
-    .btn-primary,
-    .btn-secondary {
-        width: 100%;
-        text-align: center;
-    }
-
-    .list-card table {
+    .usuarios-card table {
         display: block;
         overflow-x: auto;
     }

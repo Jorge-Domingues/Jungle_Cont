@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Gerenciar Usuários</title>
-    <link rel="stylesheet" href="/css/cadastros.css"> <!-- Reutilizando o estilo de cadastros -->
+    <link rel="stylesheet" href="/css/usuarios.css">
+    <link rel="stylesheet" href="/css/icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -13,19 +14,27 @@
 
     <div class="main">
         <div class="top">
-            <h1>Gerenciar Usuários</h1>
+            <h1><i class="fa-solid fa-users-gear"></i> Gerenciar Usuários</h1>
         </div>
 
-        <div class="container">
-            <div class="card form ativo">
-                <h2>Cadastrar Novo Usuário</h2>
-                <input id="newLogin" placeholder="Login / Usuário">
-                <input type="password" id="newSenha" placeholder="Senha">
-                <button class="btn" onclick="cadastrarUsuario()">Cadastrar Usuário</button>
+        <div class="usuarios-layout">
+            <div class="usuarios-card">
+                <h2><i class="fa-solid fa-user-plus" style="color:#ff7a00;margin-right:8px"></i>Cadastrar Novo Usuário</h2>
+                <div class="usuarios-form">
+                    <div>
+                        <label>Login / Usuário</label>
+                        <input id="newLogin" placeholder="Digite o login">
+                    </div>
+                    <div>
+                        <label>Senha</label>
+                        <input type="password" id="newSenha" placeholder="Digite a senha">
+                    </div>
+                    <button class="btn-primary" onclick="cadastrarUsuario()">Cadastrar Usuário</button>
+                </div>
             </div>
 
-            <div class="card">
-                <h2>Usuários do Sistema</h2>
+            <div class="usuarios-card">
+                <h2><i class="fa-solid fa-users" style="color:#ff7a00;margin-right:8px"></i>Usuários do Sistema</h2>
                 <table>
                     <thead>
                         <tr>

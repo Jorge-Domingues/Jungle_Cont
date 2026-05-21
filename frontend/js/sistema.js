@@ -9,7 +9,7 @@ function salvarDados(){
 }
 
 // =========================
-// 👤 CADASTRO FUNCIONÁRIO
+// CADASTRO FUNCIONÁRIO
 // =========================
 function cadastrarFuncionario(){
     let nome = document.getElementById("nome").value;
@@ -33,7 +33,7 @@ function listarFuncionarios(){
 }
 
 // =========================
-// 📊 CONTAS CONTÁBEIS
+// CONTAS CONTÁBEIS
 // =========================
 function cadastrarConta(){
     let nome = document.getElementById("contaNome").value;
@@ -56,7 +56,7 @@ function listarContas(){
 }
 
 // =========================
-// 💸 FATOS CONTÁBEIS
+// FATOS CONTÁBEIS
 // =========================
 function cadastrarFato(){
     let data = document.getElementById("data").value;
@@ -77,7 +77,7 @@ function cadastrarFato(){
 }
 
 // =========================
-// 📖 DIÁRIO
+// DIÁRIO
 // =========================
 function gerarDiario(){
     let lista = document.getElementById("diario");
@@ -97,7 +97,7 @@ function gerarDiario(){
 }
 
 // =========================
-// 📊 RAZÃO
+// RAZÃO
 // =========================
 function gerarRazao(){
     let container = document.getElementById("razao");
@@ -124,7 +124,7 @@ function gerarRazao(){
 }
 
 // =========================
-// ⚖️ BALANCETE
+// BALANCETE
 // =========================
 function gerarBalancete(){
     let tabela = document.getElementById("balancete");

@@ -270,3 +270,74 @@ td {
     .main { margin-left: 0; padding: 0; }
     .card { box-shadow: none; border: 1px solid #000; }
 }
+
+/* ===== PRÉVIA LANÇAMENTOS CONTÁBEIS ===== */
+#previaLancamentos {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    display: none;
+}
+
+#previaLancamentos:has(.previa-lanc) {
+    display: block;
+}
+
+.previa-lanc {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed var(--border);
+}
+
+.previa-lanc:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.previa-titulo {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.previa-partida {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    border-radius: 6px;
+    margin-bottom: 6px;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.previa-partida:last-child {
+    margin-bottom: 0;
+}
+
+.tag-D, .tag-C {
+    font-weight: 800;
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-right: 12px;
+    min-width: 24px;
+    text-align: center;
+}
+
+.tag-D {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--primary-hover);
+}
+
+.tag-C {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--danger);
+}
+
+.previa-valor {
+    margin-left: auto;
+    font-weight: 600;
+    color: var(--text-primary);
+}

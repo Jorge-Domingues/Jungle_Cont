@@ -1,6 +1,6 @@
 async function carregarUsuarios() {
     try {
-        const response = await fetch('/api/usuarios');
+        const response = await fetch('/api/usuarios', { credentials: 'include' });
         const usuarios = await response.json();
         
         const tabela = document.getElementById('tabelaUsuarios');
@@ -36,6 +36,7 @@ async function cadastrarUsuario() {
     try {
         const response = await fetch('/api/usuarios', {
             method: 'POST',
+            credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ login, senha })
         });
@@ -59,7 +60,8 @@ async function excluirUsuario(id) {
 
     try {
         const response = await fetch(`/api/usuarios?id=${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            credentials: 'include'
         });
 
         if (response.ok) {
@@ -83,11 +85,11 @@ function mostrarModal(tipo, mensagem) {
     box.classList.remove("sucesso", "erro");
 
     if (tipo === "sucesso") {
-        icon.innerText = "✔";
+        icon.innerHTML = ''; icon.className = 'icon-svg icon-check';
         box.classList.add("sucesso");
         setTimeout(fecharModal, 2000);
     } else {
-        icon.innerText = "✖";
+        icon.innerHTML = ''; icon.className = 'icon-svg icon-x';
         box.classList.add("erro");
     }
     modal.classList.add("show");

@@ -1,35 +1,49 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
-    <title>Diário</title>
+    <title>Livro Diário — Jungle Cont</title>
+    <meta name="description" content="Livro Diário contábil com lançamentos em partidas dobradas">
     <link rel="stylesheet" href="/css/diario.css">
+    <link rel="stylesheet" href="/css/icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-
 <body>
 
-    <!-- SIDEBAR CENTRALIZADA -->
     <div id="sidebar-container"></div>
     <script src="/js/sidebar.js"></script>
 
     <main class="main">
-
         <div class="top">
-            <h1>Diário</h1>
-            <button class="btn-voltar" onclick="gerarPDF()">Gerar PDF</button>
+            <h1><i class="fa-solid fa-book"></i> Livro Diário</h1>
+            <p class="subtitle">Escrituração formal dos lançamentos contábeis</p>
         </div>
 
-        <div class="lista" id="listaDiario"></div>
+        <!-- FILTROS -->
+        <div class="filtro-bar">
+            <div>
+                <label>De</label>
+                <input type="date" id="filtroInicio">
+            </div>
+            <div>
+                <label>Até</label>
+                <input type="date" id="filtroFim">
+            </div>
+            <button class="btn-filtrar" onclick="carregarDiario()">
+                <i class="fa-solid fa-filter"></i> Filtrar
+            </button>
+            <button class="btn-pdf" onclick="gerarPDF()">
+                <i class="fa-solid fa-file-pdf"></i> Exportar PDF
+            </button>
+        </div>
 
+        <!-- LISTA DO DIÁRIO -->
+        <div class="diario-container" id="diarioContainer">
+            <!-- Preenchido pelo JS -->
+        </div>
     </main>
 
-    <!-- Biblioteca PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
     <script src="/js/diario.js"></script>
-
 </body>
-
 </html>

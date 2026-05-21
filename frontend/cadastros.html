@@ -1,102 +1,147 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
-    <title>Cadastros</title>
+    <title>Cadastros — Jungle Cont</title>
+    <meta name="description" content="Cadastro de funcionários e plano de contas contábil">
     <link rel="stylesheet" href="/css/cadastros.css">
+    <link rel="stylesheet" href="/css/icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-
 <body>
 
-    <!-- SIDEBAR CENTRALIZADA -->
     <div id="sidebar-container"></div>
     <script src="/js/sidebar.js"></script>
 
-    <!-- CONTEÚDO -->
-    <div class="main">
-
-    <div class="top">
-        <h1>Cadastros</h1>
-    </div>
-
-    <!-- TABS -->
-    <div class="tabs">
-        <span class="tab active" onclick="trocarAba('funcionario')">Funcionário</span>
-        <span class="tab" onclick="trocarAba('conta')">Conta</span>
-    </div>
-
-    <div class="container">
-
-        <!-- FORM FUNCIONÁRIO -->
-        <div class="card form ativo" id="formFuncionario">
-            <h2>Cadastrar Funcionário</h2>
-
-            <input id="nome" placeholder="Nome">
-            <input id="cpf" placeholder="CPF">
-            <input type="date" id="data">
-            <input id="conta" placeholder="Conta">
-            <input id="salario" placeholder="Salário">
-
-            <button class="btn" onclick="cadastrarFuncionario()">Cadastrar</button>
+    <main class="main">
+        <div class="top">
+            <h1><i class="fa-solid fa-folder"></i> Cadastros</h1>
         </div>
 
-        <!-- FORM CONTA -->
-        <div class="card form" id="formConta">
-            <h2>Cadastrar Conta</h2>
+        <!-- ABAS -->
+        <div class="tabs">
+            <button class="tab active" onclick="trocarAba('funcionario')">
+                <i class="fa-solid fa-user"></i> Funcionários
+            </button>
+            <button class="tab" onclick="trocarAba('conta')">
+                <i class="fa-solid fa-sitemap"></i> Plano de Contas
+            </button>
+        </div>
 
-            <input id="codigoConta" placeholder="Código (Ex: 1.1.01)">
-            <input id="nomeConta" placeholder="Nome da conta">
-            <select id="tipoConta">
-                <option value="">Selecione o Tipo</option>
-                <option value="Ativo">Ativo</option>
-                <option value="Passivo">Passivo</option>
-                <option value="Receita">Receita</option>
-                <option value="Despesa">Despesa</option>
-            </select>
-            <input id="saldoInicialConta" placeholder="Saldo Inicial (R$ 0,00)">
-            <textarea id="descricaoConta" placeholder="Descrição / Observações" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 10px;"></textarea>
-
-            <div style="display: flex; gap: 10px;">
-                <button class="btn" id="btnSalvarConta" onclick="cadastrarConta()" style="flex: 3;">Cadastrar Conta</button>
-                <button class="btn" id="btnCancelarEdicaoConta" onclick="cancelarEdicaoConta()" style="flex: 1; background: #94a3b8; display: none;">Cancelar</button>
+        <!-- FORM FUNCIONÁRIO -->
+        <div class="form ativo" id="formFuncionario">
+            <div class="form-card">
+                <h2>Cadastrar Funcionário</h2>
+                <div class="form-grid">
+                    <div>
+                        <label>NOME</label>
+                        <input type="text" id="nome" placeholder="Nome completo">
+                    </div>
+                    <div>
+                        <label>CPF</label>
+                        <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14">
+                    </div>
+                    <div>
+                        <label>DATA DE INGRESSO</label>
+                        <input type="date" id="data">
+                    </div>
+                    <div>
+                        <label>CONTA BANCÁRIA</label>
+                        <input type="text" id="conta" placeholder="Nº da conta">
+                    </div>
+                    <div>
+                        <label>SALÁRIO</label>
+                        <input type="text" id="salario" placeholder="R$ 0,00">
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="cadastrarFuncionario()">Cadastrar Funcionário</button>
             </div>
         </div>
 
-        <!-- LISTA DINÂMICA -->
-        <div class="card">
-            <h2 id="tituloLista">Funcionários</h2>
+        <!-- FORM CONTA CONTÁBIL -->
+        <div class="form" id="formConta">
+            <div class="form-card">
+                <h2>Cadastrar Conta Contábil</h2>
+                <div class="form-grid">
+                    <div>
+                        <label>CÓDIGO</label>
+                        <input type="text" id="codigoConta" placeholder="Ex: 1.1.03">
+                    </div>
+                    <div>
+                        <label>NOME DA CONTA</label>
+                        <input type="text" id="nomeConta" placeholder="Nome descritivo">
+                    </div>
+                    <div>
+                        <label>TIPO</label>
+                        <select id="tipoConta" onchange="atualizarNatureza()">
+                            <option value="">Selecione</option>
+                            <option value="Ativo">Ativo</option>
+                            <option value="Passivo">Passivo</option>
+                            <option value="Patrimônio Líquido">Patrimônio Líquido</option>
+                            <option value="Receita">Receita</option>
+                            <option value="Despesa">Despesa</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>NATUREZA</label>
+                        <select id="naturezaConta">
+                            <option value="">Selecione o tipo primeiro</option>
+                            <option value="Devedora">Devedora</option>
+                            <option value="Credora">Credora</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>CONTA PAI</label>
+                        <select id="contaPaiConta">
+                            <option value="">Nenhuma (conta raiz)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>CLASSIFICAÇÃO</label>
+                        <select id="analiticaConta">
+                            <option value="true">Analítica (recebe lançamentos)</option>
+                            <option value="false">Sintética (totalizadora)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>SALDO INICIAL</label>
+                        <input type="text" id="saldoInicialConta" placeholder="R$ 0,00">
+                    </div>
+                    <div>
+                        <label>DESCRIÇÃO</label>
+                        <input type="text" id="descricaoConta" placeholder="Descrição da conta">
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-primary" id="btnSalvarConta" onclick="cadastrarConta()">Cadastrar Conta</button>
+                    <button class="btn-secondary" id="btnCancelarEdicaoConta" style="display:none;" onclick="cancelarEdicaoConta()">Cancelar</button>
+                </div>
+            </div>
+        </div>
 
+        <!-- LISTA -->
+        <div class="list-card">
+            <h2 id="tituloLista">Funcionários</h2>
             <table>
-                <thead id="cabecalhoTabela">
-                    <tr>
-                        <th>Nome</th>
-                        <th>CPF</th>
-                        <th>Data</th>
-                        <th>Conta</th>
-                        <th>Salário</th>
-                    </tr>
-                </thead>
+                <thead id="cabecalhoTabela"></thead>
                 <tbody id="tabela"></tbody>
             </table>
         </div>
 
-    </div>
+    </main>
 
-</div>
-
-<div id="modal" class="modal">
-    <div class="modal-box">
-        <span id="modalIcon"></span>
-        <p id="modalTexto"></p>
-        <div id="modalFooter" style="display: flex; gap: 10px; justify-content: center;">
-            <button id="btnModalOk" onclick="fecharModal()">OK</button>
-            <button id="btnModalCancelar" onclick="fecharModal()" style="display: none; background: #94a3b8;">Cancelar</button>
+    <!-- MODAL -->
+    <div id="modal" class="modal">
+        <div class="modal-box">
+            <span id="modalIcon"></span>
+            <p id="modalTexto"></p>
+            <div class="modal-buttons">
+                <button id="btnModalOk" onclick="fecharModal()">OK</button>
+                <button id="btnModalCancelar" style="display:none;" class="btn-cancel">Cancelar</button>
+            </div>
         </div>
     </div>
-</div>
-<script src="/js/cadastros.js?v=2"></script>
 
+    <script src="/js/cadastros.js"></script>
 </body>
 </html>

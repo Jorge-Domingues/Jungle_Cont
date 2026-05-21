@@ -1,134 +1,117 @@
-let listaContas = [];
-let listaFatos = [];
+/* ============================================================
+   BALANCETE.JS — Balancete de Verificação
+   ============================================================ */
 
-/* ===== CARREGAR DADOS ===== */
-async function carregarDados() {
+async function carregarBalancete() {
     try {
-        const respContas = await fetch('/api/contas');
-        listaContas = await respContas.json();
+        const inicio = document.getElementById("filtroInicio").value;
+        const fim = document.getElementById("filtroFim").value;
 
-        const respFatos = await fetch('/api/fatos');
-        listaFatos = await respFatos.json();
+        let url = '/api/relatorios/balancete';
+        const params = [];
+        if (inicio) params.push(`inicio=${inicio}`);
+        if (fim) params.push(`fim=${fim}`);
+        if (params.length) url += '?' + params.join('&');
 
-        processarBalancete();
+        const resp = await fetch(url, { credentials: 'include' });
+        const data = await resp.json();
+
+        renderizarBalancete(data);
     } catch (err) {
-        console.error("Erro ao carregar dados do balancete:", err);
+        console.error("Erro ao carregar balancete:", err);
     }
 }
 
-/* ===== PROCESSAR E RENDERIZAR ===== */
-function processarBalancete() {
+function renderizarBalancete(data) {
     const tbody = document.getElementById("balanceteBody");
+    const tfoot = document.getElementById("balanceteFoot");
     tbody.innerHTML = "";
 
-    let totalAtivo = 0;
-    let totalPassivo = 0;
-    let totalReceita = 0;
-    let totalDespesa = 0;
-
-    let totalGeralDebito = 0;
-    let totalGeralCredito = 0;
-
-    // Atualizar data no título
     const dataHoje = new Date().toLocaleDateString("pt-BR");
-    document.querySelector("h1 span").innerText = `(${dataHoje})`;
+    document.getElementById("dataRef").innerText = `(${dataHoje})`;
 
-    listaContas.forEach(conta => {
-        const fatosDaConta = listaFatos.filter(f => f.conta_id === conta.id);
-        
-        let somaDebitos = 0;
-        let somaCreditos = 0;
+    let totalAtivo = 0, totalPassivo = 0, totalPL = 0;
+    let totalReceita = 0, totalDespesa = 0;
 
-        fatosDaConta.forEach(f => {
-            const valor = parseFloat(f.valor);
-            if (f.tipo === "entrada" || f.tipo === "Débito") {
-                somaDebitos += valor;
-            } else {
-                somaCreditos += valor;
-            }
-        });
+    data.contas.forEach(c => {
+        const corNatureza = c.natureza === 'Devedora' ? '#16a34a' : '#dc2626';
+        const saldoColor = c.saldo < 0 ? '#ef4444' : '#1e293b';
 
-        // Cálculo do Saldo Final baseado na natureza da conta
-        let saldoFinal = 0;
-        const saldoInicial = parseFloat(conta.saldo_inicial) || 0;
-
-        if (conta.tipo === "Ativo" || conta.tipo === "Despesa") {
-            // Natureza Devedora (Débito aumenta)
-            saldoFinal = saldoInicial + somaDebitos - somaCreditos;
-        } else {
-            // Natureza Credora (Crédito aumenta - Passivo e Receita)
-            saldoFinal = saldoInicial + somaCreditos - somaDebitos;
-        }
-
-        // Acumular totais para o resumo
-        if (conta.tipo === "Ativo") totalAtivo += saldoFinal;
-        if (conta.tipo === "Passivo") totalPassivo += saldoFinal;
-        if (conta.tipo === "Receita") totalReceita += saldoFinal;
-        if (conta.tipo === "Despesa") totalDespesa += saldoFinal;
-
-        totalGeralDebito += somaDebitos;
-        totalGeralCredito += somaCreditos;
-
-        // Renderizar Linha
-        const cor = conta.cor || '#64748b';
         tbody.innerHTML += `
             <tr>
-                <td><small style="color: #64748b; font-weight: bold;">${conta.codigo || '---'}</small></td>
-                <td>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <div style="width: 10px; height: 10px; border-radius: 50%; background: ${cor};"></div>
-                        <strong>${conta.nome}</strong>
-                    </div>
-                </td>
-                <td>${formatarMoeda(somaDebitos)}</td>
-                <td>${formatarMoeda(somaCreditos)}</td>
-                <td style="font-weight: bold; color: ${saldoFinal < 0 ? '#ef4444' : '#1e293b'}">
-                    ${formatarMoeda(saldoFinal)}
-                </td>
+                <td><small style="color: #94a3b8; font-weight: 700;">${c.codigo}</small></td>
+                <td><strong>${c.nome}</strong></td>
+                <td><span class="badge-natureza" style="color: ${corNatureza}">${c.natureza === 'Devedora' ? 'Dev' : 'Cred'}</span></td>
+                <td class="valor-debito">${formatarMoeda(c.debitos)}</td>
+                <td class="valor-credito">${formatarMoeda(c.creditos)}</td>
+                <td style="font-weight: 700; color: ${saldoColor}">${formatarMoeda(c.saldo)}</td>
             </tr>
         `;
+
+        if (c.tipo === 'Ativo') totalAtivo += c.saldo;
+        else if (c.tipo === 'Passivo') totalPassivo += c.saldo;
+        else if (c.tipo === 'Patrimônio Líquido') totalPL += c.saldo;
+        else if (c.tipo === 'Receita') totalReceita += c.saldo;
+        else if (c.tipo === 'Despesa') totalDespesa += c.saldo;
     });
 
-    // Atualizar Resumo Patrimonial
-    atualizarResumo(totalAtivo, totalPassivo, totalReceita, totalDespesa);
-}
+    // Totais
+    tfoot.innerHTML = `
+        <tr class="total-row">
+            <td colspan="3"><strong>TOTAIS</strong></td>
+            <td class="valor-debito"><strong>${formatarMoeda(data.totais.debitos)}</strong></td>
+            <td class="valor-credito"><strong>${formatarMoeda(data.totais.creditos)}</strong></td>
+            <td><strong>${formatarMoeda(data.totais.saldo_devedor - data.totais.saldo_credor)}</strong></td>
+        </tr>
+    `;
 
-/* ===== ATUALIZAR CARDS LATERAIS ===== */
-function atualizarResumo(ativo, passivo, receita, despesa) {
-    // Patrimônio Líquido = Ativo - Passivo + (Receita - Despesa)
-    const lucroPrejuizo = receita - despesa;
-    const pl = ativo - passivo;
-
-    const cardResumo = document.querySelector(".card:nth-child(1)");
-    cardResumo.innerHTML = `
+    // Resumo
+    const resultado = totalReceita - totalDespesa;
+    document.getElementById("cardResumo").innerHTML = `
         <h3>Resumo Patrimonial</h3>
-        <p>Total Ativo <span class="positivo">${formatarMoeda(ativo)}</span></p>
-        <p>Total Passivo <span class="negativo">${formatarMoeda(passivo)}</span></p>
-        <p>Resultado (L/P) <span class="${lucroPrejuizo >= 0 ? 'positivo' : 'negativo'}">${formatarMoeda(lucroPrejuizo)}</span></p>
-        <hr style="margin: 10px 0; border: 0; border-top: 1px solid #e2e8f0;">
-        <p><strong>Patrimônio Líquido</strong> <span style="font-weight: bold;">${formatarMoeda(pl + lucroPrejuizo)}</span></p>
+        <p>Total Ativo <span class="val-positivo">${formatarMoeda(totalAtivo)}</span></p>
+        <p>Total Passivo <span class="val-negativo">${formatarMoeda(totalPassivo)}</span></p>
+        <p>Patrimônio Líquido <span class="val-neutro">${formatarMoeda(totalPL)}</span></p>
+        <hr>
+        <p>Receitas <span class="val-positivo">${formatarMoeda(totalReceita)}</span></p>
+        <p>Despesas <span class="val-negativo">${formatarMoeda(totalDespesa)}</span></p>
+        <p><strong>Resultado</strong> <span style="font-weight:700;">${formatarMoeda(resultado)}</span></p>
     `;
 
-    const cardEquacao = document.querySelector(".card:nth-child(2)");
-    cardEquacao.innerHTML = `
+    // Equação
+    const plTotal = totalPL + resultado;
+    document.getElementById("cardEquacao").innerHTML = `
         <h3>Equação Fundamental</h3>
-        <div class="equacao" style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px;">
-            <span class="ativo">Ativo</span>
-            <span>=</span>
-            <span class="passivo">Passivo + PL</span>
+        <div class="equacao-visual">
+            <div class="eq-lado">
+                <span class="eq-label">Ativo</span>
+                <span class="eq-valor">${formatarMoeda(totalAtivo)}</span>
+            </div>
+            <span class="eq-sinal">=</span>
+            <div class="eq-lado">
+                <span class="eq-label">Passivo + PL</span>
+                <span class="eq-valor">${formatarMoeda(totalPassivo + plTotal)}</span>
+            </div>
         </div>
-        <div class="equacao valores" style="display: flex; justify-content: space-between; font-weight: bold;">
-            <span class="ativo">${formatarMoeda(ativo)}</span>
-            <span>=</span>
-            <span style="color: #6366f1;">${formatarMoeda(passivo + (pl + lucroPrejuizo))}</span>
+    `;
+
+    // Status
+    const equilibrado = data.totais.equilibrado;
+    document.getElementById("cardStatus").innerHTML = `
+        <h3>Status</h3>
+        <div class="status-indicator ${equilibrado ? 'ok' : 'erro'}">
+            <span class="status-icon"><i class="icon-svg ${equilibrado ? 'icon-check' : 'icon-x'}"></i></span>
+            <span class="status-text">${equilibrado ? 'Contabilidade Equilibrada' : 'DESEQUILÍBRIO DETECTADO'}</span>
         </div>
+        <p class="status-detail">
+            Saldos Devedores: ${formatarMoeda(data.totais.saldo_devedor)}<br>
+            Saldos Credores: ${formatarMoeda(data.totais.saldo_credor)}
+        </p>
     `;
 }
 
-/* ===== UTILITÁRIOS ===== */
 function formatarMoeda(valor) {
     return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
-// Iniciar
-carregarDados();
+carregarBalancete();

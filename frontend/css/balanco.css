@@ -1,0 +1,137 @@
+/* ============================================================
+   BALANCO.CSS — Balanço Patrimonial
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #f1f5f9; color: #1e293b; min-height: 100vh;
+}
+
+.main { padding: 30px 40px; }
+.top { margin-bottom: 25px; }
+.top h1 { font-size: 26px; font-weight: 700; color: #0f3d1e; display: flex; align-items: center; gap: 12px; }
+.top .subtitle { color: #64748b; font-size: 13px; margin-top: 4px; }
+
+.filtro-bar {
+    display: flex; gap: 12px; align-items: flex-end;
+    margin-bottom: 25px; background: white;
+    padding: 18px 24px; border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+
+.filtro-bar label {
+    font-size: 10px; font-weight: 600; color: #64748b;
+    text-transform: uppercase; display: block; margin-bottom: 4px;
+}
+
+.filtro-bar input {
+    padding: 9px 14px; border: 1.5px solid #e2e8f0;
+    border-radius: 10px; font-size: 13px; font-family: 'Inter', sans-serif; background: #f8fafc;
+}
+.filtro-bar input:focus { outline: none; border-color: #2c8b4b; background: white; }
+
+.btn-filtrar {
+    padding: 9px 18px; border: none; border-radius: 10px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif; display: flex;
+    align-items: center; gap: 6px; transition: all 0.2s;
+    background: linear-gradient(135deg, #0f3d1e, #2c8b4b); color: white;
+}
+.btn-filtrar:hover { transform: translateY(-1px); }
+
+/* HEADER CARD */
+.bp-header-card {
+    background: white; border-radius: 16px; padding: 24px;
+    text-align: center; margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+
+.bp-header-card h2 {
+    font-size: 16px; font-weight: 700; color: #0f3d1e;
+    letter-spacing: 1px;
+}
+
+.bp-header-card p { font-size: 12px; color: #64748b; margin-top: 4px; }
+
+.bp-status {
+    display: inline-block; padding: 4px 16px; border-radius: 20px;
+    font-size: 12px; font-weight: 600; margin-top: 10px;
+}
+
+.bp-status.ok { background: #ecfdf5; color: #059669; }
+.bp-status.erro { background: #fef2f2; color: #dc2626; }
+
+/* GRID */
+.bp-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+}
+
+.bp-coluna {
+    background: white; border-radius: 16px; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+
+.bp-coluna-header {
+    padding: 14px 20px; font-size: 13px; font-weight: 700;
+    color: white; text-transform: uppercase; letter-spacing: 1px;
+    display: flex; align-items: center; gap: 8px;
+}
+
+.ativo-bg { background: linear-gradient(135deg, #059669, #10b981); }
+.passivo-bg { background: linear-gradient(135deg, #d97706, #f59e0b); }
+.pl-bg { background: linear-gradient(135deg, #6d28d9, #8b5cf6); }
+
+.bp-coluna-body { padding: 16px 20px; }
+
+/* LINHAS */
+.bp-linha {
+    display: flex; align-items: center; padding: 6px 0; font-size: 13px;
+}
+
+.bp-codigo {
+    font-size: 11px; color: #94a3b8; font-weight: 600;
+    margin-right: 10px; min-width: 50px;
+}
+
+.bp-nome { color: #475569; }
+
+.bp-dots {
+    flex: 1; border-bottom: 1px dotted #cbd5e1;
+    margin: 0 10px; min-width: 20px;
+}
+
+.bp-valor {
+    font-weight: 600; font-variant-numeric: tabular-nums;
+    white-space: nowrap; color: #1e293b;
+}
+
+.bp-vazio {
+    padding: 16px 0; font-size: 13px; color: #94a3b8; font-style: italic;
+}
+
+.bp-subtotal {
+    display: flex; justify-content: space-between;
+    padding: 10px 0; margin-top: 8px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 13px; font-weight: 600; color: #475569;
+}
+
+.bp-total {
+    display: flex; justify-content: space-between;
+    padding: 14px 0; margin-top: 8px;
+    border-top: 2px solid #1e293b;
+    font-size: 14px; font-weight: 700; color: #1e293b;
+}
+
+.bp-total-valor { font-size: 16px; }
+
+.bp-linha.resultado { background: #fefce8; padding: 6px 4px; border-radius: 6px; }
+
+.empty-state {
+    text-align: center; padding: 50px; color: #94a3b8;
+    background: white; border-radius: 16px;
+}
+.empty-state i { font-size: 48px; margin-bottom: 12px; opacity: 0.5; display: block; }

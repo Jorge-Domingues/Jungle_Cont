@@ -1,0 +1,149 @@
+/* ============================================================
+   DRE.CSS — Demonstração do Resultado do Exercício
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #f1f5f9; color: #1e293b; min-height: 100vh;
+}
+
+.main { padding: 30px 40px; }
+.top { margin-bottom: 25px; }
+.top h1 { font-size: 26px; font-weight: 700; color: #0f3d1e; display: flex; align-items: center; gap: 12px; }
+.top .subtitle { color: #64748b; font-size: 13px; margin-top: 4px; }
+
+.filtro-bar {
+    display: flex; gap: 12px; align-items: flex-end;
+    margin-bottom: 25px; background: white;
+    padding: 18px 24px; border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+
+.filtro-bar label {
+    font-size: 10px; font-weight: 600; color: #64748b;
+    text-transform: uppercase; display: block; margin-bottom: 4px;
+}
+
+.filtro-bar input {
+    padding: 9px 14px; border: 1.5px solid #e2e8f0;
+    border-radius: 10px; font-size: 13px; font-family: 'Inter', sans-serif; background: #f8fafc;
+}
+.filtro-bar input:focus { outline: none; border-color: #2c8b4b; background: white; }
+
+.btn-filtrar {
+    padding: 9px 18px; border: none; border-radius: 10px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif; display: flex;
+    align-items: center; gap: 6px; transition: all 0.2s;
+    background: linear-gradient(135deg, #0f3d1e, #2c8b4b); color: white;
+}
+.btn-filtrar:hover { transform: translateY(-1px); }
+
+/* DRE CARD */
+.dre-card {
+    background: white; border-radius: 16px; padding: 32px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    max-width: 800px;
+}
+
+.dre-header {
+    text-align: center; margin-bottom: 28px;
+    padding-bottom: 16px; border-bottom: 2px solid #e2e8f0;
+}
+
+.dre-header h2 {
+    font-size: 16px; font-weight: 700; color: #0f3d1e;
+    letter-spacing: 1px;
+}
+
+.dre-periodo { font-size: 12px; color: #64748b; margin-top: 4px; }
+
+/* SEÇÕES */
+.dre-secao { margin-bottom: 24px; }
+
+.secao-titulo {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; padding: 8px 0; margin-bottom: 8px;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex; align-items: center; gap: 8px;
+}
+
+.receita-titulo { color: #059669; }
+.despesa-titulo { color: #dc2626; }
+
+.dre-linha {
+    display: flex; align-items: center; padding: 6px 0 6px 16px;
+    font-size: 14px;
+}
+
+.dre-codigo {
+    font-size: 11px; color: #94a3b8; font-weight: 600;
+    margin-right: 10px; min-width: 50px;
+}
+
+.dre-nome { color: #475569; }
+
+.dre-dots {
+    flex: 1; border-bottom: 1px dotted #cbd5e1;
+    margin: 0 12px; min-width: 20px;
+}
+
+.dre-valor {
+    font-weight: 600; font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.positivo { color: #059669; }
+.negativo { color: #dc2626; }
+
+.dre-vazio {
+    padding: 12px 16px; font-size: 13px; color: #94a3b8;
+    font-style: italic;
+}
+
+.dre-subtotal {
+    display: flex; justify-content: space-between;
+    padding: 10px 16px; margin-top: 8px;
+    background: #f8fafc; border-radius: 8px;
+    font-size: 14px; font-weight: 600;
+}
+
+/* RESULTADO FINAL */
+.dre-resultado {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 20px; border-radius: 12px;
+    margin-top: 8px;
+}
+
+.dre-resultado.lucro {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border: 2px solid #10b981;
+}
+
+.dre-resultado.prejuizo {
+    background: linear-gradient(135deg, #fef2f2, #fecaca);
+    border: 2px solid #ef4444;
+}
+
+.resultado-label {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; font-weight: 700;
+}
+
+.resultado-icon { font-size: 24px; }
+
+.resultado-valor {
+    font-size: 22px; font-weight: 800;
+}
+
+.dre-resultado.lucro .resultado-valor { color: #059669; }
+.dre-resultado.prejuizo .resultado-valor { color: #dc2626; }
+
+.empty-state {
+    text-align: center; padding: 50px; color: #94a3b8;
+    background: white; border-radius: 16px;
+}
+.empty-state i { font-size: 48px; margin-bottom: 12px; opacity: 0.5; display: block; }

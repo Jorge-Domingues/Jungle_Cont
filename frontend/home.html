@@ -2,64 +2,66 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <title>Dashboard — Jungle Cont</title>
+    <meta name="description" content="Dashboard principal do sistema contábil Jungle Cont">
     <link rel="stylesheet" href="/css/home.css">
-
-    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/css/icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-
 <body>
 
-    <!-- SIDEBAR CENTRALIZADA -->
     <div id="sidebar-container"></div>
     <script src="/js/sidebar.js"></script>
 
-    <!-- MAIN -->
     <main class="main">
-
         <div class="top">
-            <h1>Dashboard</h1>
+            <h1><i class="icon-svg icon-leaf"></i> Dashboard</h1>
+            <p class="subtitle">Visão geral da situação contábil</p>
         </div>
 
-        <!-- CARDS -->
-        <div class="cards">
+        <!-- CARDS PRINCIPAIS -->
+        <div class="cards-grid">
+            <div class="dash-card" id="saldoTotal">
+                <i class="icon-svg icon-bank card-icon"></i>
+                <span class="card-label">Saldo dos Ativos</span>
+                <span class="card-value">Carregando...</span>
+            </div>
+            <div class="dash-card" id="totalEntradas">
+                <i class="icon-svg icon-chart-up card-icon"></i>
+                <span class="card-label">Receitas</span>
+                <span class="card-value">Carregando...</span>
+            </div>
+            <div class="dash-card" id="totalSaidas">
+                <i class="icon-svg icon-chart-down card-icon"></i>
+                <span class="card-label">Despesas</span>
+                <span class="card-value">Carregando...</span>
+            </div>
+            <div class="dash-card" id="saudeContabil">
+                <i class="icon-svg icon-search card-icon"></i>
+                <span class="card-label">Saúde Contábil</span>
+                <span class="card-value">Carregando...</span>
+            </div>
+        </div>
 
-            <div class="card saldo">
-                <i class="fa-solid fa-coins"></i>
-                <h3>Saldo Total</h3>
-                <p id="saldoTotal"></p>
+        <div class="content-grid">
+            <!-- ÚLTIMOS LANÇAMENTOS -->
+            <div class="section-card">
+                <h2><i class="fa-solid fa-clock-rotate-left"></i> Últimos Lançamentos</h2>
+                <div id="ultimos">
+                    <p style="color:#94a3b8;padding:20px;text-align:center">Carregando...</p>
+                </div>
             </div>
 
-            <div class="card entrada">
-                <i class="fa-solid fa-arrow-up"></i>
-                <h3>Entradas</h3>
-                <p id="totalEntradas"></p>
+            <!-- RESUMO DO PLANO DE CONTAS -->
+            <div class="section-card">
+                <h2><i class="fa-solid fa-sitemap"></i> Resumo do Sistema</h2>
+                <div id="resumoContas" class="resumo-grid">
+                    <p style="color:#94a3b8;padding:20px;text-align:center">Carregando...</p>
+                </div>
             </div>
-
-            <div class="card saida">
-                <i class="fa-solid fa-arrow-down"></i>
-                <h3>Saídas</h3>
-                <p id="totalSaidas"></p>
-            </div>
-
         </div>
-
-        <!-- DESTAQUE -->
-        <div class="card destaque">
-            <h2>Bem-vindo ao Jungle Cont 🌿</h2>
-            <p>Sistema contábil simples para controle de fatos, razão, diário e balancete.</p>
-        </div>
-
-        <!-- ÚLTIMOS -->
-        <div class="card">
-            <h2>Últimos Lançamentos</h2>
-            <div id="ultimos"></div>
-        </div>
-
     </main>
 
     <script src="/js/home.js"></script>
-
 </body>
 </html>

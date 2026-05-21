@@ -3,7 +3,7 @@ let funcionarios = [];
 /* ===== CARREGAR DADOS ===== */
 async function carregarFuncionarios() {
     try {
-        const response = await fetch('/api/funcionarios');
+        const response = await fetch('/api/funcionarios', { credentials: 'include' });
         funcionarios = await response.json();
         
         const select = document.getElementById("selectFuncionario");
@@ -22,16 +22,18 @@ async function carregarFuncionarios() {
 
 async function carregarContas() {
     try {
-        const response = await fetch('/api/contas');
+        const response = await fetch('/api/contas', { credentials: 'include' });
         const contas = await response.json();
         const select = document.getElementById("selectContaPagamento");
         
-        // Filtrar apenas contas que são do tipo 'Ativo'
-        const contasAtivo = contas.filter(c => c.tipo === 'Ativo');
+        // Filtrar apenas contas analíticas do tipo 'Ativo'
+        const contasAtivo = contas.filter(c => 
+            c.tipo === 'Ativo' && (c.analitica === 1 || c.analitica === true)
+        );
         
-        select.innerHTML = '<option value="">Selecione a conta (Ativos)...</option>';
+        select.innerHTML = '<option value="">Selecione a conta de pagamento...</option>';
         contasAtivo.forEach(c => {
-            select.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
+            select.innerHTML += `<option value="${c.id}">${c.codigo} — ${c.nome}</option>`;
         });
 
         if (contasAtivo.length === 0) {
@@ -52,17 +54,14 @@ function calcularTudo() {
         return;
     }
 
-    // Entradas do Contador
     const hExtrasQtd = parseFloat(document.getElementById("horasExtras").value) || 0;
     const faltasQtd = parseFloat(document.getElementById("faltas").value) || 0;
     const bonusValor = parseFloat(document.getElementById("bonus").value) || 0;
     const temVT = document.getElementById("descontarVT").checked;
 
-    // Constantes de Cálculo
     const salarioBase = parseFloat(f.salario);
     const valorHora = salarioBase / 220; 
     
-    // Cálculos de Proventos e Descontos
     const valorHExtras = hExtrasQtd * (valorHora * 1.5);
     const valorFaltas = faltasQtd * valorHora;
     const valorVT = temVT ? (salarioBase * 0.06) : 0;
@@ -154,6 +153,38 @@ function calcularTudo() {
             <td style="color: #3b82f6; font-size: 0.8rem">${formatarMoeda(fgts)}</td>
         </tr>
     `;
+
+    // Prévia dos lançamentos contábeis
+    renderizarPrevia(f.nome, salarioBruto, inss, fgts, liquido);
+}
+
+/* ===== PRÉVIA DOS LANÇAMENTOS ===== */
+function renderizarPrevia(nome, bruto, inss, fgts, liquido) {
+    const container = document.getElementById("previaLancamentos");
+    if (!container) return;
+
+    container.innerHTML = `
+        <h3 style="font-size:13px;color:#0f3d1e;margin-bottom:10px">
+            <i class="fa-solid fa-eye"></i> Prévia dos Lançamentos Contábeis
+        </h3>
+        <div class="previa-lanc">
+            <div class="previa-titulo">1. Reconhecimento da Despesa</div>
+            <div class="previa-partida"><span class="tag-D">D</span> 5.1.01 Despesas com Pessoal <span class="previa-valor">${formatarMoeda(bruto)}</span></div>
+            <div class="previa-partida"><span class="tag-C">C</span> 2.1.02 Salários a Pagar <span class="previa-valor">${formatarMoeda(bruto)}</span></div>
+        </div>
+        <div class="previa-lanc">
+            <div class="previa-titulo">2. Encargos Sociais</div>
+            <div class="previa-partida"><span class="tag-D">D</span> 5.1.02 Encargos (INSS) <span class="previa-valor">${formatarMoeda(inss)}</span></div>
+            <div class="previa-partida"><span class="tag-C">C</span> 2.1.03 INSS a Recolher <span class="previa-valor">${formatarMoeda(inss)}</span></div>
+            <div class="previa-partida"><span class="tag-D">D</span> 5.1.03 Encargos (FGTS) <span class="previa-valor">${formatarMoeda(fgts)}</span></div>
+            <div class="previa-partida"><span class="tag-C">C</span> 2.1.04 FGTS a Recolher <span class="previa-valor">${formatarMoeda(fgts)}</span></div>
+        </div>
+        <div class="previa-lanc">
+            <div class="previa-titulo">3. Pagamento</div>
+            <div class="previa-partida"><span class="tag-D">D</span> 2.1.02 Salários a Pagar <span class="previa-valor">${formatarMoeda(liquido)}</span></div>
+            <div class="previa-partida"><span class="tag-C">C</span> 1.1.02 Banco <span class="previa-valor">${formatarMoeda(liquido)}</span></div>
+        </div>
+    `;
 }
 
 /* ===== CÁLCULO INSS 2024 (Progressivo) ===== */
@@ -173,16 +204,13 @@ function calcularINSS(salario) {
             let baseCalculo = Math.min(salario, faixa.limite) - baseAnterior;
             imposto += baseCalculo * faixa.aliquota;
             baseAnterior = faixa.limite;
-        } else {
-            break;
-        }
+        } else break;
     }
     return imposto;
 }
 
-/* ===== GRAVAR NO BANCO E INTEGRAR CONTABILIDADE ===== */
+/* ===== GRAVAR FOLHA (com múltiplos lançamentos) ===== */
 async function gravarFolha() {
-    console.log("Botão Gravar clicado!");
     const id = document.getElementById("selectFuncionario").value;
     const contaId = document.getElementById("selectContaPagamento").value;
     const f = funcionarios.find(func => func.id == id);
@@ -204,28 +232,35 @@ async function gravarFolha() {
     const valorVT = temVT ? (salarioBase * 0.06) : 0;
     
     const proventos = salarioBase + valorHExtras + bonusValor;
-    const descontos = valorFaltas + calcularINSS(proventos - valorFaltas) + valorVT;
+    const salarioBruto = proventos - valorFaltas;
+    const inss = calcularINSS(salarioBruto);
+    const fgts = salarioBruto * 0.08;
+    const descontos = valorFaltas + inss + valorVT;
     const liquido = proventos - descontos;
 
     try {
         const response = await fetch('/api/folhas', {
             method: 'POST',
+            credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 funcionario_id: f.id,
-                conta_id: contaId,
                 nome: f.nome,
                 salario_base: salarioBase,
                 proventos: proventos,
                 descontos: descontos,
-                liquido: liquido
+                liquido: liquido,
+                inss: inss,
+                fgts: fgts,
+                conta_pagamento_id: parseInt(contaId)
             })
         });
 
         if (response.ok) {
-            mostrarModal("sucesso", "Folha gravada e lançada no Diário!");
+            mostrarModal("sucesso", "Folha gravada com 3 lançamentos contábeis!");
         } else {
-            mostrarModal("erro", "Erro ao gravar a folha.");
+            const err = await response.json();
+            mostrarModal("erro", err.error || "Erro ao gravar a folha.");
         }
     } catch (err) {
         mostrarModal("erro", "Erro de conexão com o servidor.");
@@ -243,10 +278,12 @@ function limparCampos() {
     document.getElementById("resumoFGTS").innerText = "R$ 0,00";
     document.getElementById("resumoLiquido").innerText = "R$ 0,00";
     document.getElementById("corpoFolha").innerHTML = "";
+    const previa = document.getElementById("previaLancamentos");
+    if (previa) previa.innerHTML = "";
 }
 
 /* ===== MODAL ===== */
-function mostrarModal(tipo, mensagem){
+function mostrarModal(tipo, mensagem) {
     let modal = document.getElementById("modal");
     let texto = document.getElementById("modalTexto");
     let icon = document.getElementById("modalIcon");
@@ -255,22 +292,22 @@ function mostrarModal(tipo, mensagem){
     texto.innerText = mensagem;
     box.classList.remove("sucesso", "erro");
 
-    if(tipo === "sucesso"){
-        icon.innerText = "✔";
+    if (tipo === "sucesso") {
+        icon.innerHTML = ''; icon.className = 'icon-svg icon-check';
         box.classList.add("sucesso");
         setTimeout(fecharModal, 2500);
     } else {
-        icon.innerText = "✖";
+        icon.innerHTML = ''; icon.className = 'icon-svg icon-x';
         box.classList.add("erro");
     }
     modal.classList.add("show");
 }
 
-function fecharModal(){
+function fecharModal() {
     document.getElementById("modal").classList.remove("show");
 }
 
-/* ===== ABRIR / FECHAR HOLERITE ===== */
+/* ===== HOLERITE ===== */
 function abrirHolerite() {
     const id = document.getElementById("selectFuncionario").value;
     const f = funcionarios.find(func => func.id == id);
@@ -280,7 +317,6 @@ function abrirHolerite() {
         return;
     }
 
-    // Recalcula todos os valores
     const hExtrasQtd  = parseFloat(document.getElementById("horasExtras").value) || 0;
     const faltasQtd   = parseFloat(document.getElementById("faltas").value) || 0;
     const bonusValor  = parseFloat(document.getElementById("bonus").value) || 0;
@@ -296,52 +332,34 @@ function abrirHolerite() {
     const fgts         = salarioBruto * 0.08;
     const liquido      = salarioBruto - inss - valorVT;
 
-    // --- Preenche dados do funcionário ---
     document.getElementById("holNome").textContent      = f.nome;
     document.getElementById("holMatricula").textContent = String(f.id).padStart(4, '0');
     document.getElementById("holCPF").textContent       = f.cpf || '—';
 
-    // Admissão formatada
     if (f.data_ingresso) {
         const d = new Date(f.data_ingresso);
         document.getElementById("holAdmissao").textContent =
             d.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
     }
 
-    // Período = mês/ano atual
     const hoje = new Date();
     const periodo = hoje.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
     document.getElementById("holPeriodo").textContent =
         periodo.charAt(0).toUpperCase() + periodo.slice(1);
 
-    // --- Monta colunas da tabela de verbas ---
-    // Cada coluna é uma div independente, preenchemos linha a linha
-    const verbas     = [];
-    const refs       = [];
-    const vencimentos = [];
-    const descontos  = [];
+    const verbas = [], refs = [], vencimentos = [], descontos = [];
 
     const addLinha = (verba, ref, venc, desc) => {
-        verbas.push(verba);
-        refs.push(ref);
+        verbas.push(verba); refs.push(ref);
         vencimentos.push(venc ? formatarMoeda(venc) : '');
         descontos.push(desc ? formatarMoeda(desc) : '');
     };
 
     addLinha('Salário Base', '30 dias', salarioBase, null);
-
-    if (hExtrasQtd > 0)
-        addLinha('Horas Extras (50%)', `${hExtrasQtd}h`, valorHExtras, null);
-
-    if (bonusValor > 0)
-        addLinha('Bonificações / Prêmios', '—', bonusValor, null);
-
-    if (valorFaltas > 0)
-        addLinha('Faltas / Atrasos', `${faltasQtd}h`, null, valorFaltas);
-
-    if (temVT)
-        addLinha('Vale Transporte (6%)', 'Sobre Base', null, valorVT);
-
+    if (hExtrasQtd > 0) addLinha('Horas Extras (50%)', `${hExtrasQtd}h`, valorHExtras, null);
+    if (bonusValor > 0) addLinha('Bonificações / Prêmios', '—', bonusValor, null);
+    if (valorFaltas > 0) addLinha('Faltas / Atrasos', `${faltasQtd}h`, null, valorFaltas);
+    if (temVT) addLinha('Vale Transporte (6%)', 'Sobre Base', null, valorVT);
     addLinha('INSS', 'Tabela 2024', null, inss);
 
     const renderCol = (containerId, items) => {
@@ -351,28 +369,23 @@ function abrirHolerite() {
         ).join('');
     };
 
-    renderCol('holVerbas',     verbas);
-    renderCol('holRefs',       refs);
+    renderCol('holVerbas', verbas);
+    renderCol('holRefs', refs);
     renderCol('holVencimentos', vencimentos);
-    renderCol('holDescontos',  descontos);
+    renderCol('holDescontos', descontos);
 
-    // Totais
     const totalVenc = salarioBase + valorHExtras + bonusValor;
     const totalDesc = valorFaltas + inss + valorVT;
     document.getElementById("holTotalVenc").textContent = formatarMoeda(totalVenc);
     document.getElementById("holTotalDesc").textContent = formatarMoeda(totalDesc);
-
-    // Líquido
     document.getElementById("holLiquido").textContent = formatarMoeda(liquido);
 
-    // Rodapé de base de cálculo
     document.getElementById("holBaseSalario").textContent = formatarMoeda(salarioBase);
     document.getElementById("holBaseINSS").textContent    = formatarMoeda(salarioBruto);
     document.getElementById("holBaseFGTS").textContent    = formatarMoeda(salarioBruto);
     document.getElementById("holValorFGTS").textContent   = formatarMoeda(fgts);
     document.getElementById("holBaseIRRF").textContent    = formatarMoeda(salarioBruto);
 
-    // Abre o overlay
     document.getElementById("holerite-overlay").classList.add("show");
 }
 

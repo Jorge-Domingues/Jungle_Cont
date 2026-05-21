@@ -39,10 +39,10 @@ function mostrarModal(tipo, mensagem){
     box.classList.remove("sucesso", "erro");
 
     if(tipo === "sucesso"){
-        icon.innerText = "✔";
+        icon.innerHTML = ''; icon.className = 'icon-svg icon-check';
         box.classList.add("sucesso");
     } else {
-        icon.innerText = "✖";
+        icon.innerHTML = ''; icon.className = 'icon-svg icon-x';
         box.classList.add("erro");
     }
 

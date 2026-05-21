@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Balanço Patrimonial — Jungle Cont</title>
+    <meta name="description" content="Balanço Patrimonial com equação A = P + PL">
+    <link rel="stylesheet" href="/css/balanco.css">
+    <link rel="stylesheet" href="/css/icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+    <div id="sidebar-container"></div>
+    <script src="/js/sidebar.js"></script>
+
+    <main class="main">
+        <div class="top">
+            <h1><i class="fa-solid fa-chart-pie"></i> Balanço Patrimonial</h1>
+            <p class="subtitle">Ativo = Passivo + Patrimônio Líquido</p>
+        </div>
+
+        <div class="filtro-bar">
+            <div>
+                <label>Data de Referência</label>
+                <input type="date" id="filtroData">
+            </div>
+            <button class="btn-filtrar" onclick="carregarBalanco()">
+                <i class="fa-solid fa-filter"></i> Gerar Balanço
+            </button>
+        </div>
+
+        <div id="balancoContainer">
+            <div class="empty-state">
+                <i class="fa-solid fa-chart-pie"></i>
+                <p>Carregando Balanço Patrimonial...</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/balanco.js"></script>
+</body>
+</html>
