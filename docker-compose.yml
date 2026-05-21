@@ -36,5 +36,13 @@ services:
     depends_on:
       - db
 
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: jungle_cont_tunnel
+    restart: always
+    command: tunnel --url http://backend:3000
+    depends_on:
+      - backend
+
 volumes:
   db_data:
