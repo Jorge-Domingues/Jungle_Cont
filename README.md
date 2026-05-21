@@ -1,5 +1,7 @@
 # Jungle Cont
 
+![Jungle Cont Logo](frontend/img/logo.png)
+
 Sistema contábil formal baseado no método das Partidas Dobradas, desenvolvido para gestão financeira de pequenas e médias empresas.
 
 ## Sobre
@@ -44,20 +46,6 @@ npm install
 docker-compose up -d
 ```
 
-4. Acesse o sistema:
-```
-http://localhost:3000
-```
-
-### Usuários Padrão
-
-| Login | Senha |
-|-------|-------|
-| jorge | jungle123 |
-| logan | jungle123 |
-| gabriel | jungle123 |
-| natan | jungle123 |
-
 ## Funcionalidades
 
 ### Cadastros
@@ -95,6 +83,43 @@ Jungle Cont/
 ├── docs/                   # Documentação adicional
 └── docker-compose.yml      # Configuração Docker
 ```
+
+## Banco de Dados
+
+![Esquema do Banco de Dados](jungle Cont db.png)
+
+O sistema utiliza o **MariaDB** como banco de dados relacional. A estrutura é organizada nas seguintes tabelas:
+
+### Tabelas Principais
+
+- **usuarios**: Usuários do sistema com autenticação via JWT
+- **contas**: Plano de contas hierárquico (Ativo, Passivo, PL, Receitas, Despesas)
+- **lancamentos**: Cabeçalho dos lançamentos contábeis (data, descrição, origem)
+- **partidas**: Itens dos lançamentos (débito/crédito, conta, valor)
+- **funcionarios**: Cadastro de colaboradores com salário e conta de provisão
+- **folhas**: Histórico de folhas de pagamento geradas
+
+### Relacionamentos
+
+- `partidas.lancamento_id` → `lancamentos.id`
+- `partidas.conta_id` → `contas.id`
+- `lancamentos.usuario_id` → `usuarios.id`
+- `folhas.funcionario_id` → `funcionarios.id`
+- `folhas.lancamento_id` → `lancamentos.id`
+- `contas.conta_pai_id` → `contas.id` (autorelacionamento para hierarquia)
+
+### Acesso Externo
+
+O banco de dados é acessível via:
+- **Docker**: Porta 3306 exposta no host
+- **Credenciais**:
+  - Host: `localhost`
+  - Porta: `3306`
+  - User: `jungle_user`
+  - Password: `jungle_password`
+  - Database: `jungle_cont`
+
+Para acessar via MySQL Workbench ou outro cliente, use as credenciais acima.
 
 ## Como Usar
 
