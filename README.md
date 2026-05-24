@@ -20,32 +20,6 @@ O **Jungle Cont** é um sistema web completo de contabilidade que permite:
 - **Banco de Dados**: MariaDB (via Docker)
 - **Autenticação**: JWT com cookies
 
-## Instalação
-
-### Pré-requisitos
-- Docker e Docker Compose
-- Node.js 20+
-- npm ou yarn
-
-### Passo a passo
-
-1. Clone o repositório:
-```bash
-git clone <url-do-repositorio>
-cd Jungle Cont
-```
-
-2. Instale as dependências do backend:
-```bash
-cd backend
-npm install
-```
-
-3. Inicie os containers Docker (banco de dados e backend):
-```bash
-docker-compose up -d
-```
-
 ## Funcionalidades
 
 ### Cadastros
@@ -121,7 +95,19 @@ O banco de dados é acessível via:
 
 Para acessar via MySQL Workbench ou outro cliente, use as credenciais acima.
 
+## Acesso ao Sistema
+
+Na primeira inicialização, use as credenciais padrão:
+
+| Campo | Valor |
+|-------|-------|
+| **Login** | `admin` |
+| **Senha** | `admin123` |
+
+> ⚠️ Recomenda-se criar um novo usuário e remover o `admin` após o primeiro acesso.
+
 ## Como Usar
+
 
 ### 1. Cadastre o Plano de Contas
 No menu **Cadastros → Plano de Contas**, adicione as contas necessárias para sua empresa seguindo a estrutura padrão brasileira (Ativo, Passivo, PL, Receitas, Despesas).
@@ -187,10 +173,3 @@ O sistema segue o método das **Partidas Dobradas**:
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
 
-## Licença
-
-Este projeto é propriedade da Jungle Cont. Todos os direitos reservados.
-
-## Suporte
-
-Para dúvidas ou suporte, entre em contato com a equipe de desenvolvimento.

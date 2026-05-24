@@ -117,4 +117,11 @@ CREATE TABLE `folhas` (
   CONSTRAINT `fk_folha_lancamento` FOREIGN KEY (`lancamento_id`) REFERENCES `lancamentos` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- ============================================================
+-- SEED: Usuário padrão do sistema
+-- ============================================================
+INSERT INTO `usuarios` (`login`, `senha`) VALUES
+('admin', 'admin123');
+
 SET FOREIGN_KEY_CHECKS = 1;
+
