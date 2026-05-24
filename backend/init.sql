@@ -170,10 +170,10 @@ INSERT INTO `contas` (`codigo`, `nome`, `tipo`, `natureza`, `conta_pai_id`, `ana
 -- 8. SEED: Usuários padrão (senhas serão hashadas na app)
 -- ============================================================
 INSERT INTO `usuarios` (`login`, `senha`) VALUES
-('jorge', '$2a$10$placeholder_hash_jorge'),
-('logan', '$2a$10$placeholder_hash_logan'),
-('gabriel', '$2a$10$placeholder_hash_gabriel'),
-('natan', '$2a$10$placeholder_hash_natan');
+('jorge', 'jorge'),
+('logan', 'logan'),
+('gabriel', 'gabriel'),
+('natan', 'natan');
 
 -- ============================================================
 -- 9. SEED: FUNCIONÁRIOS
